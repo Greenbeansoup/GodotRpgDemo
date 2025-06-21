@@ -85,13 +85,14 @@ func _physics_process(delta):
 			slime_state = Slime_State.CHASE
 	elif slime_state == Slime_State.IDLE:
 		direction = current_direction
+		if sleep_timer.time_left == 0:
+			sleep_timer.start(SLEEP_TIMEOUT)
 	elif slime_state == Slime_State.CHASE:
 		if target != null and target.global_position.distance_to(global_position) <= DE_AGGRO_RANGE:
 			direction = target.global_position - global_position
 			move_speed = SPEED
 		else:
 			slime_state = Slime_State.IDLE
-			sleep_timer.start(SLEEP_TIMEOUT)
 	
 	if direction.x > 0:
 		animated_sprite_2d.flip_h = false
