@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://crmv5gq3xcca4"]
+
+[ext_resource type="Script" uid="uid://dbee41vgd6xo5" path="res://scripts/stamina_bar.gd" id="1_lcti6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lcti6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4t3n2"]
+bg_color = Color(0, 0.8, 0, 1)
+
+[node name="StaminaBar" type="ProgressBar"]
+offset_right = 18.0
+offset_bottom = 1.0
+theme_override_styles/background = SubResource("StyleBoxFlat_lcti6")
+theme_override_styles/fill = SubResource("StyleBoxFlat_4t3n2")
+show_percentage = false
+script = ExtResource("1_lcti6")

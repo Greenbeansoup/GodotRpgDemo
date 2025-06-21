@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://bk7mxp32ht3kg"]
+
+[node name="PlayerCamera" type="Camera2D"]
+zoom = Vector2(4, 4)
+position_smoothing_enabled = true

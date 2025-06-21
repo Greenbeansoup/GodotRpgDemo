@@ -1,0 +1,1 @@
+class_name DetectionBox extends Area2D

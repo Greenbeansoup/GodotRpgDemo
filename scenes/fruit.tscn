@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://c1278dg48601a"]
+
+[ext_resource type="Texture2D" uid="uid://wclfe0rvvega" path="res://assets/fruit.png" id="1_yvtr8"]
+[ext_resource type="Script" uid="uid://bpwtnagti5fw0" path="res://scripts/fruit.gd" id="2_t2alg"]
+[ext_resource type="Script" uid="uid://b5rx01rok1480" path="res://scripts/touch_box.gd" id="3_t2alg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_64keg"]
+size = Vector2(9, 16)
+
+[node name="Fruit" type="Sprite2D"]
+texture = ExtResource("1_yvtr8")
+hframes = 4
+vframes = 4
+frame = 1
+script = ExtResource("2_t2alg")
+
+[node name="TouchBox" type="Area2D" parent="."]
+script = ExtResource("3_t2alg")
+metadata/_custom_type_script = "uid://b5rx01rok1480"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TouchBox"]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_64keg")
+
+[connection signal="body_entered" from="TouchBox" to="." method="_on_touch_box_entered"]

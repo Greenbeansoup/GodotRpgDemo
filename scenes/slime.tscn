@@ -1,0 +1,83 @@
+[gd_scene load_steps=13 format=3 uid="uid://tw8xb2ol0eox"]
+
+[ext_resource type="Texture2D" uid="uid://bcli0uss7hvvk" path="res://assets/slime_green.png" id="1_371uh"]
+[ext_resource type="Script" uid="uid://cwkpw5waykiqj" path="res://scripts/slime.gd" id="1_n6pvg"]
+[ext_resource type="Script" uid="uid://bm03sebpowi0g" path="res://scripts/hit_box.gd" id="1_p2gj0"]
+[ext_resource type="Script" uid="uid://b4xdu0rho08pi" path="res://scripts/hurt_box.gd" id="4_pjw23"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n6pvg"]
+atlas = ExtResource("1_371uh")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pjw23"]
+atlas = ExtResource("1_371uh")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2npkn"]
+atlas = ExtResource("1_371uh")
+region = Rect2(48, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fd6lc"]
+atlas = ExtResource("1_371uh")
+region = Rect2(72, 24, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gstla"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n6pvg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pjw23")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2npkn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fd6lc")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p2gj0"]
+size = Vector2(12, 3)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n6pvg"]
+size = Vector2(14, 5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2npkn"]
+size = Vector2(14, 5)
+
+[node name="Slime" type="CharacterBody2D" groups=["Trappable"]]
+script = ExtResource("1_n6pvg")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -12)
+sprite_frames = SubResource("SpriteFrames_gstla")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.519636
+
+[node name="HitBox" type="Area2D" parent="."]
+position = Vector2(0, -12)
+script = ExtResource("1_p2gj0")
+damage = 20.0
+metadata/_custom_type_script = "uid://bm03sebpowi0g"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(0, 10.5)
+shape = SubResource("RectangleShape2D_p2gj0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2.5)
+shape = SubResource("RectangleShape2D_n6pvg")
+
+[node name="HurtBox" type="Area2D" parent="."]
+script = ExtResource("4_pjw23")
+metadata/_custom_type_script = "uid://b4xdu0rho08pi"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+position = Vector2(0, -2.5)
+shape = SubResource("RectangleShape2D_2npkn")

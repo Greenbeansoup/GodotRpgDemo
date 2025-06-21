@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://c3bsgnicf5ym4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gwlgw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7x8w2"]
+bg_color = Color(0, 0.801622, 3.85046e-07, 1)
+
+[node name="DashBar" type="ProgressBar"]
+offset_right = 136.0
+offset_bottom = 41.0
+theme_override_styles/background = SubResource("StyleBoxFlat_gwlgw")
+theme_override_styles/fill = SubResource("StyleBoxFlat_7x8w2")
+max_value = 1.0
+value = 1.0
+show_percentage = false

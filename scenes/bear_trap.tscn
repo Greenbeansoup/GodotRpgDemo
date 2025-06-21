@@ -1,0 +1,144 @@
+[gd_scene load_steps=18 format=3 uid="uid://bimby2tv6kwdh"]
+
+[ext_resource type="Script" uid="uid://3i1fvvcx7i2k" path="res://scripts/bear_trap.gd" id="1_gbrjp"]
+[ext_resource type="Texture2D" uid="uid://cea8df6fm45mj" path="res://assets/Bear_Trap.png" id="3_p5mqs"]
+[ext_resource type="Script" uid="uid://xias512jahte" path="res://scripts/detection_box.gd" id="4_8fn3p"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mpry8"]
+atlas = ExtResource("3_p5mqs")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8fn3p"]
+atlas = ExtResource("3_p5mqs")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gbrjp"]
+atlas = ExtResource("3_p5mqs")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gxg0v"]
+atlas = ExtResource("3_p5mqs")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p5mqs"]
+atlas = ExtResource("3_p5mqs")
+region = Rect2(96, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kj6tr"]
+atlas = ExtResource("3_p5mqs")
+region = Rect2(32, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b8isq"]
+atlas = ExtResource("3_p5mqs")
+region = Rect2(64, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h7bbw"]
+atlas = ExtResource("3_p5mqs")
+region = Rect2(96, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t3ud5"]
+atlas = ExtResource("3_p5mqs")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c7l2h"]
+atlas = ExtResource("3_p5mqs")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5oypt"]
+atlas = ExtResource("3_p5mqs")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_h7bbw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mpry8")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8fn3p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gbrjp")
+}, {
+"duration": 8.0,
+"texture": SubResource("AtlasTexture_gxg0v")
+}, {
+"duration": 8.0,
+"texture": SubResource("AtlasTexture_p5mqs")
+}, {
+"duration": 4.0,
+"texture": SubResource("AtlasTexture_kj6tr")
+}, {
+"duration": 4.0,
+"texture": SubResource("AtlasTexture_b8isq")
+}, {
+"duration": 12.0,
+"texture": SubResource("AtlasTexture_h7bbw")
+}],
+"loop": false,
+"name": &"slime_trapped",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t3ud5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c7l2h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5oypt")
+}],
+"loop": false,
+"name": &"trigger",
+"speed": 12.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p5mqs"]
+radius = 8.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gbrjp"]
+radius = 3.0
+height = 18.0
+
+[node name="BearTrap" type="Node2D"]
+script = ExtResource("1_gbrjp")
+metadata/_custom_type_script = "uid://3i1fvvcx7i2k"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -7)
+sprite_frames = SubResource("SpriteFrames_h7bbw")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="SprungTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="ViewBox" type="Area2D" parent="."]
+position = Vector2(0, -7)
+script = ExtResource("4_8fn3p")
+metadata/_custom_type_script = "uid://xias512jahte"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ViewBox"]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_p5mqs")
+
+[node name="DetectionTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="GrabBox" type="Area2D" parent="."]
+collision_mask = 3
+script = ExtResource("4_8fn3p")
+metadata/_custom_type_script = "uid://xias512jahte"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GrabBox"]
+position = Vector2(0, -7)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_gbrjp")
+
+[connection signal="timeout" from="SprungTimer" to="." method="_on_timer_timeout"]
