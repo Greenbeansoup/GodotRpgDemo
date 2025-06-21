@@ -30,6 +30,7 @@ func _ready():
 	view_box.connect("body_entered", _on_detection_box_body_entered)
 	view_box.connect("body_exited", _on_detection_box_body_exited)
 	detection_timer.connect("timeout", _on_detection_timer_timeout)
+	animated_sprite_2d.connect("animation_finished", _on_animation_finished)
 	
 	does_hold = true
 	hold_length = 3.0
@@ -53,9 +54,12 @@ func trigger_trap(body: Entity = null):
 		body.set_entity_velocity(Vector2.ZERO)
 		body.set_entity_can_move(false)
 		body.damage_entity(DAMAGE)
-	if body != null and body is Slime:
-		animated_sprite_2d.play("slime_trapped")
-		body.queue_free()
+		if body != null and body is Slime:
+			if (body as Slime).slime_type == Slime.Slime_Type.PURPLE:
+				animated_sprite_2d.play("slime_trapped_purple")
+				body.hide()
+			else:
+				animated_sprite_2d.play("slime_trapped_green")
 	else:
 		animated_sprite_2d.play("trigger")
 		sprung_timer.start(hold_length)
@@ -86,3 +90,13 @@ func _on_hit_box_body_exited(body):
 
 func _on_detection_box_body_exited(body):
 	detection_box_bodies_entered.erase(body)
+	
+func _on_animation_finished():
+	var anim_name: String = animated_sprite_2d.animation
+	if anim_name == "slime_trapped_purple":
+		is_sprung = false
+		self.z_index = -1
+		animated_sprite_2d.play("idle")
+		trapped_entity.set_entity_can_move(true)
+		trapped_entity.show()
+		trapped_entity = null

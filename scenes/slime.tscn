@@ -1,9 +1,42 @@
-[gd_scene load_steps=13 format=3 uid="uid://tw8xb2ol0eox"]
+[gd_scene load_steps=26 format=3 uid="uid://tw8xb2ol0eox"]
 
 [ext_resource type="Texture2D" uid="uid://bcli0uss7hvvk" path="res://assets/slime_green.png" id="1_371uh"]
 [ext_resource type="Script" uid="uid://cwkpw5waykiqj" path="res://scripts/slime.gd" id="1_n6pvg"]
 [ext_resource type="Script" uid="uid://bm03sebpowi0g" path="res://scripts/hit_box.gd" id="1_p2gj0"]
+[ext_resource type="Texture2D" uid="uid://bnwyotewt3s83" path="res://assets/slime_purple.png" id="3_2npkn"]
 [ext_resource type="Script" uid="uid://b4xdu0rho08pi" path="res://scripts/hurt_box.gd" id="4_pjw23"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gstla"]
+atlas = ExtResource("1_371uh")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v5wyi"]
+atlas = ExtResource("3_2npkn")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0l8pv"]
+atlas = ExtResource("1_371uh")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vnioy"]
+atlas = ExtResource("1_371uh")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2xjuo"]
+atlas = ExtResource("1_371uh")
+region = Rect2(72, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a02ik"]
+atlas = ExtResource("3_2npkn")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pu8ps"]
+atlas = ExtResource("3_2npkn")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g40cl"]
+atlas = ExtResource("3_2npkn")
+region = Rect2(72, 0, 24, 24)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n6pvg"]
 atlas = ExtResource("1_371uh")
@@ -21,8 +54,68 @@ region = Rect2(48, 24, 24, 24)
 atlas = ExtResource("1_371uh")
 region = Rect2(72, 24, 24, 24)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_cxm07"]
+atlas = ExtResource("3_2npkn")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g2qvl"]
+atlas = ExtResource("3_2npkn")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tyl0w"]
+atlas = ExtResource("3_2npkn")
+region = Rect2(48, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fur4c"]
+atlas = ExtResource("3_2npkn")
+region = Rect2(72, 24, 24, 24)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_gstla"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gstla")
+}],
+"loop": false,
+"name": &"asleep_green",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v5wyi")
+}],
+"loop": false,
+"name": &"asleep_purple",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0l8pv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vnioy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2xjuo")
+}],
+"loop": false,
+"name": &"awaken_green",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a02ik")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pu8ps")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g40cl")
+}],
+"loop": false,
+"name": &"awaken_purple",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_n6pvg")
@@ -37,7 +130,24 @@ animations = [{
 "texture": SubResource("AtlasTexture_fd6lc")
 }],
 "loop": true,
-"name": &"idle",
+"name": &"idle_green",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cxm07")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g2qvl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tyl0w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fur4c")
+}],
+"loop": true,
+"name": &"idle_purple",
 "speed": 10.0
 }]
 
@@ -56,9 +166,7 @@ script = ExtResource("1_n6pvg")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_gstla")
-animation = &"idle"
-autoplay = "idle"
-frame_progress = 0.519636
+animation = &"awaken_green"
 
 [node name="HitBox" type="Area2D" parent="."]
 position = Vector2(0, -12)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bimby2tv6kwdh"]
+[gd_scene load_steps=18 format=3 uid="uid://bimby2tv6kwdh"]
 
 [ext_resource type="Script" uid="uid://3i1fvvcx7i2k" path="res://scripts/bear_trap.gd" id="1_gbrjp"]
 [ext_resource type="Texture2D" uid="uid://cea8df6fm45mj" path="res://assets/Bear_Trap.png" id="3_p5mqs"]
@@ -36,34 +36,6 @@ region = Rect2(64, 64, 32, 32)
 atlas = ExtResource("3_p5mqs")
 region = Rect2(96, 64, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_6u8xi"]
-atlas = ExtResource("3_p5mqs")
-region = Rect2(0, 96, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_1p151"]
-atlas = ExtResource("3_p5mqs")
-region = Rect2(32, 96, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_prs46"]
-atlas = ExtResource("3_p5mqs")
-region = Rect2(64, 96, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_tss55"]
-atlas = ExtResource("3_p5mqs")
-region = Rect2(96, 96, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_h0hka"]
-atlas = ExtResource("3_p5mqs")
-region = Rect2(32, 128, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_36ept"]
-atlas = ExtResource("3_p5mqs")
-region = Rect2(64, 128, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_2h0kn"]
-atlas = ExtResource("3_p5mqs")
-region = Rect2(96, 128, 32, 32)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_t3ud5"]
 atlas = ExtResource("3_p5mqs")
 region = Rect2(32, 0, 32, 32)
@@ -82,7 +54,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_mpry8")
 }],
-"loop": true,
+"loop": false,
 "name": &"idle",
 "speed": 10.0
 }, {
@@ -109,34 +81,8 @@ animations = [{
 "texture": SubResource("AtlasTexture_h7bbw")
 }],
 "loop": false,
-"name": &"slime_trapped_green",
+"name": &"slime_trapped",
 "speed": 12.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_6u8xi")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_1p151")
-}, {
-"duration": 8.0,
-"texture": SubResource("AtlasTexture_prs46")
-}, {
-"duration": 8.0,
-"texture": SubResource("AtlasTexture_tss55")
-}, {
-"duration": 4.0,
-"texture": SubResource("AtlasTexture_h0hka")
-}, {
-"duration": 4.0,
-"texture": SubResource("AtlasTexture_36ept")
-}, {
-"duration": 12.0,
-"texture": SubResource("AtlasTexture_2h0kn")
-}],
-"loop": false,
-"name": &"slime_trapped_purple",
-"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -167,7 +113,7 @@ metadata/_custom_type_script = "uid://3i1fvvcx7i2k"
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -7)
 sprite_frames = SubResource("SpriteFrames_h7bbw")
-animation = &"idle"
+animation = &"slime_trapped"
 autoplay = "idle"
 
 [node name="SprungTimer" type="Timer" parent="."]
