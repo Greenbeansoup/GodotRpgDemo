@@ -2,4 +2,4 @@
 .godot/
 /android/
 .editorconfig
-/exports/
+exports/
