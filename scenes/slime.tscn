@@ -162,6 +162,7 @@ size = Vector2(14, 5)
 
 [node name="Slime" type="CharacterBody2D" groups=["Trappable"]]
 script = ExtResource("1_n6pvg")
+slime_state = 1
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -12)

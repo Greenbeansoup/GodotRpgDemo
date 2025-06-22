@@ -1,6 +1,6 @@
 class_name Entity extends CharacterBody2D
 
-var can_move: bool
+@export var can_move: bool
 var is_invulnerable: bool
 
 func set_entity_position(position: Vector2):

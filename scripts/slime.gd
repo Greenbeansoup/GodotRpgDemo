@@ -3,6 +3,7 @@ class_name Slime extends Entity
 @onready var animated_sprite_2d = $AnimatedSprite2D
 @export var health_controller: StatusController
 @export var target: Node2D
+@export var can_sleep: bool = true
 @export_enum("PURPLE:0", "GREEN:1") var slime_type: int
 enum Slime_Type {
 	PURPLE = 0,
@@ -16,7 +17,7 @@ enum Slime_State {
 	CHASE,
 }
 
-var slime_state: Slime_State
+@export var slime_state: Slime_State
 
 var move_timer: Timer
 var sleep_timer: Timer
@@ -33,7 +34,7 @@ const IDLE_MOVE_TIMEOUT = 1.0
 const SLEEP_TIMEOUT = 5.0
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	_initialize(slime_type)
+	_initialize(slime_type, slime_state, can_move)
 	move_timer = Timer.new()
 	move_timer.connect("timeout", _change_direction)
 	move_timer.one_shot = true
@@ -43,21 +44,23 @@ func _ready():
 	add_child(move_timer)
 	add_child(sleep_timer)
 	rng = RandomNumberGenerator.new()
-	health_controller = StatusController.new()
-	health_controller.max_value = 1
-	health_controller.min_value = 0
-	health_controller.connect("status_changed", _on_health_changed)
+	if health_controller != null:
+		health_controller = StatusController.new()
+		health_controller.max_value = 1
+		health_controller.min_value = 0
+		health_controller.connect("status_changed", _on_health_changed)
 	animated_sprite_2d.connect("animation_finished", _on_animation_finished)
 	
-func _initialize(type: Slime_Type):
-	slime_state = Slime_State.ASLEEP
+func _initialize(type: Slime_Type, state: Slime_State, can_move: bool):
+	slime_state = state
 	slime_type = type
 	if type == Slime_Type.PURPLE:
 		animated_sprite_2d.play("asleep_purple")
 	else:
 		animated_sprite_2d.play("asleep_green")
-	can_move = true
+	self.can_move = can_move
 	dead = false
+	_animate(type, state)
 
 func damage_entity(value: float):
 	health_controller.decrement_value(value)
@@ -70,7 +73,7 @@ func _physics_process(delta):
 	if !is_visible_in_tree():
 		return
 	if dead and slime_type == Slime_Type.PURPLE:
-		_initialize(Slime_Type.GREEN)
+		_initialize(Slime_Type.GREEN, Slime_State.ASLEEP, true)
 	elif !dead and !can_move:
 		return
 	elif dead:
@@ -84,8 +87,10 @@ func _physics_process(delta):
 		elif slime_state == Slime_State.IDLE:
 			slime_state = Slime_State.CHASE
 	elif slime_state == Slime_State.IDLE:
+		if move_timer.time_left == 0:
+			move_timer.start(IDLE_MOVE_TIMEOUT + rng.randf())
 		direction = current_direction
-		if sleep_timer.time_left == 0:
+		if can_sleep and sleep_timer.time_left == 0:
 			sleep_timer.start(SLEEP_TIMEOUT)
 	elif slime_state == Slime_State.CHASE:
 		if target != null and target.global_position.distance_to(global_position) <= DE_AGGRO_RANGE:
@@ -114,11 +119,9 @@ func _on_animation_finished():
 	if slime_state == Slime_State.ASLEEP:
 		return
 	if anim_name == "awaken_purple":
-		move_timer.start(IDLE_MOVE_TIMEOUT + rng.randf())
 		animated_sprite_2d.play("idle_purple")
 		slime_state = Slime_State.IDLE
 	if anim_name == "awaken_green":
-		move_timer.start(IDLE_MOVE_TIMEOUT + rng.randf())
 		animated_sprite_2d.play("idle_green")
 		slime_state = Slime_State.IDLE
 
@@ -140,3 +143,15 @@ func _sleep_timer_timeout():
 			animated_sprite_2d.play_backwards("awaken_purple")
 		else:
 			animated_sprite_2d.play_backwards("awaken_green")
+			
+func _animate(type: Slime_Type, state: Slime_State):
+	if type == Slime_Type.PURPLE:
+		if state == Slime_State.IDLE:
+			animated_sprite_2d.play("idle_purple")
+		elif state == Slime_State.ASLEEP:
+			animated_sprite_2d.play("asleep_purple")
+	if type == Slime_Type.GREEN:
+		if state == Slime_State.IDLE:
+			animated_sprite_2d.play("idle_green")
+		elif state == Slime_State.ASLEEP:
+			animated_sprite_2d.play("asleep_green")

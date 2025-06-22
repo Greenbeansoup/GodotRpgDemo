@@ -7,6 +7,7 @@ extends Entity
 @onready var death_timer = $DeathTimer
 @onready var roll_timer = $RollTimer
 
+@export var player_camera: Camera2D
 @export var health_controller: StatusController
 @export var stamina_controller: StatusController
 
@@ -27,12 +28,12 @@ var roll_velocity = Vector2.ZERO
 var death_activated = false
 
 func _on_ready():
+	if player_camera != null:
+		add_child(player_camera)
 	is_invulnerable = false # Inhereted from Entity
 	death_timer.connect("timeout", _on_death_timer_timeout)
 	health_controller.connect("status_changed", _on_health_changed)
 	roll_timer.connect("timeout", _on_rolltimer_timeout)
-	
-	can_move = true
 
 func _process(delta):
 	if stamina_can_refill:

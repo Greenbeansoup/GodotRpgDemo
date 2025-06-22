@@ -11,13 +11,17 @@ config_version=5
 [application]
 
 config/name="RPGDemo"
-run/main_scene="uid://biaagnm4awvxk"
+run/main_scene="uid://bldnlx4akxv6p"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 Globals="*res://Autoload/globals.gd"
+
+[display]
+
+window/stretch/mode="canvas_items"
 
 [global_group]
 
