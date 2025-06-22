@@ -44,11 +44,10 @@ func _ready():
 	add_child(move_timer)
 	add_child(sleep_timer)
 	rng = RandomNumberGenerator.new()
-	if health_controller != null:
-		health_controller = StatusController.new()
-		health_controller.max_value = 1
-		health_controller.min_value = 0
-		health_controller.connect("status_changed", _on_health_changed)
+	health_controller = StatusController.new()
+	health_controller.max_value = 1
+	health_controller.min_value = 0
+	health_controller.connect("status_changed", _on_health_changed)
 	animated_sprite_2d.connect("animation_finished", _on_animation_finished)
 	
 func _initialize(type: Slime_Type, state: Slime_State, can_move: bool):

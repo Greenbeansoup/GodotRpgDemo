@@ -7,9 +7,9 @@ extends Entity
 @onready var death_timer = $DeathTimer
 @onready var roll_timer = $RollTimer
 
-@export var player_camera: Camera2D
 @export var health_controller: StatusController
 @export var stamina_controller: StatusController
+@export var dead = false
 
 const SPEED = 100.0
 const DASH_STRENGTH = 250.0
@@ -24,12 +24,9 @@ var is_rolling = false
 var is_taking_hit = false
 var is_dead = false
 var roll_velocity = Vector2.ZERO
-@export var dead = false
 var death_activated = false
 
 func _on_ready():
-	if player_camera != null:
-		add_child(player_camera)
 	is_invulnerable = false # Inhereted from Entity
 	death_timer.connect("timeout", _on_death_timer_timeout)
 	health_controller.connect("status_changed", _on_health_changed)

@@ -54,12 +54,12 @@ func trigger_trap(body: Entity = null):
 		body.set_entity_velocity(Vector2.ZERO)
 		body.set_entity_can_move(false)
 		body.damage_entity(DAMAGE)
-		if body != null and body is Slime:
-			if (body as Slime).slime_type == Slime.Slime_Type.PURPLE:
-				animated_sprite_2d.play("slime_trapped_purple")
-				body.hide()
-			else:
-				animated_sprite_2d.play("slime_trapped_green")
+	if body != null and body is Slime:
+		if (body as Slime).slime_type == Slime.Slime_Type.PURPLE:
+			animated_sprite_2d.play("slime_trapped_purple")
+			body.hide()
+		else:
+			animated_sprite_2d.play("slime_trapped_green")
 	else:
 		animated_sprite_2d.play("trigger")
 		sprung_timer.start(hold_length)

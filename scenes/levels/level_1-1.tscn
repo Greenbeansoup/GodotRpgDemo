@@ -11,9 +11,8 @@
 y_sort_enabled = true
 script = ExtResource("1_ddcun")
 
-[node name="Player" parent="." node_paths=PackedStringArray("player_camera") instance=ExtResource("2_qbunr")]
+[node name="Player" parent="." instance=ExtResource("2_qbunr")]
 position = Vector2(-58, -4)
-player_camera = NodePath("Camera2D")
 can_move = true
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
@@ -36,6 +35,7 @@ collision_mask = 0
 target = NodePath("../Player")
 slime_type = 1
 slime_state = 0
+can_move = true
 
 [node name="Slime2" parent="." node_paths=PackedStringArray("target") instance=ExtResource("4_873xx")]
 position = Vector2(767, -47)
@@ -44,6 +44,7 @@ collision_mask = 0
 target = NodePath("../Player")
 slime_type = 1
 slime_state = 0
+can_move = true
 
 [node name="Slime3" parent="." node_paths=PackedStringArray("target") instance=ExtResource("4_873xx")]
 position = Vector2(812, 87)
@@ -52,6 +53,7 @@ collision_mask = 0
 target = NodePath("../Player")
 slime_type = 1
 slime_state = 0
+can_move = true
 
 [node name="Slime4" parent="." node_paths=PackedStringArray("target") instance=ExtResource("4_873xx")]
 position = Vector2(966, 10)
@@ -59,6 +61,7 @@ collision_layer = 2
 collision_mask = 0
 target = NodePath("../Player")
 slime_state = 0
+can_move = true
 
 [node name="BearTrap" parent="." instance=ExtResource("5_r8eet")]
 position = Vector2(740, 66)
@@ -103,3 +106,4 @@ collision_mask = 0
 target = NodePath("../Player")
 slime_type = 1
 slime_state = 0
+can_move = true
