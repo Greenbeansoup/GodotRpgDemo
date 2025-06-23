@@ -40,7 +40,7 @@ func _process(delta):
 	pass
 
 func _on_hit_box_body_entered(body):
-	if body is Entity and body.is_in_group("Trappable") and !grab_box_bodies_entered.has(body):
+	if body is Entity and !grab_box_bodies_entered.has(body):
 		grab_box_bodies_entered.append(body)
 		if !is_sprung:
 			trigger_trap(body)
@@ -49,11 +49,12 @@ func trigger_trap(body: Entity = null):
 	is_sprung = true
 	self.z_index = 0
 	if body != null and !body.check_is_invulnerable() and does_hold:
-		trapped_entity = body
-		body.set_entity_position(position)
-		body.set_entity_velocity(Vector2.ZERO)
-		body.set_entity_can_move(false)
 		body.damage_entity(DAMAGE)
+		if body.is_in_group("Trappable"):
+			trapped_entity = body
+			body.set_entity_position(position)
+			body.set_entity_velocity(Vector2.ZERO)
+			body.set_entity_can_move(false)
 	if body != null and body is Slime:
 		if (body as Slime).slime_type == Slime.Slime_Type.PURPLE:
 			animated_sprite_2d.play("slime_trapped_purple")

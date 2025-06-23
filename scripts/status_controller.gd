@@ -9,8 +9,8 @@ signal status_changed(old_value, new_value)
 
 func _ready():
 	if status_bar != null:
-		status_bar.value = value
 		status_bar.max_value = max_value
+		status_bar.value = value
 
 func decrement_value(decrement_value: float):
 	change_value(-decrement_value)
