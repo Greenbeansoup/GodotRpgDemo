@@ -1,9 +1,10 @@
-[gd_scene load_steps=26 format=3 uid="uid://dun8xlksty5cs"]
+[gd_scene load_steps=28 format=3 uid="uid://dun8xlksty5cs"]
 
 [ext_resource type="Script" uid="uid://k1i8umifx2ww" path="res://scripts/boss_slime.gd" id="1_7lci5"]
 [ext_resource type="Script" uid="uid://b4xdu0rho08pi" path="res://scripts/hurt_box.gd" id="2_64n04"]
 [ext_resource type="Texture2D" uid="uid://bnwyotewt3s83" path="res://assets/slime_purple.png" id="3_7lci5"]
 [ext_resource type="Script" uid="uid://bvgxu5nkfsasw" path="res://scripts/boss_slime_animation.gd" id="4_vd2mp"]
+[ext_resource type="Script" uid="uid://bm03sebpowi0g" path="res://scripts/hit_box.gd" id="5_r3e0i"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vd2mp"]
 size = Vector2(54.5, 13)
@@ -158,6 +159,9 @@ _data = {
 &"take_hit": SubResource("Animation_1vp13")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1vp13"]
+size = Vector2(52, 6)
+
 [node name="BossSlime" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 0
@@ -198,3 +202,12 @@ root_node = NodePath("../..")
 libraries = {
 &"": SubResource("AnimationLibrary_1vp13")
 }
+
+[node name="HitBox" type="Area2D" parent="."]
+script = ExtResource("5_r3e0i")
+damage = 50.0
+metadata/_custom_type_script = "uid://bm03sebpowi0g"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(0, -5)
+shape = SubResource("RectangleShape2D_1vp13")

@@ -10,7 +10,7 @@ extends Entity
 enum SLIME_STATES {ASLEEP, AWAKEN, IDLE, ASLEEPEN, CHASE, TAKE_DAMAGE}
 const AGGRO_RANGE = 100
 const DE_AGGRO_RANGE = 200
-const SPEED = 80
+const SPEED = 60
 
 var slime_state_machine: FiniteStateMachine
 
@@ -65,3 +65,7 @@ func _is_slime_state(state: SLIME_STATES) -> bool:
 	
 func _set_state(state: SLIME_STATES) -> void:
 	slime_state_machine.change_state(_state_name(state))
+	
+func damage_entity(value: float):
+	if health_controller != null:
+		health_controller.decrement_value(value)

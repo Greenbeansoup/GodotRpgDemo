@@ -1,7 +1,7 @@
-[gd_scene load_steps=35 format=3 uid="uid://bttitv0tct00p"]
+[gd_scene load_steps=37 format=3 uid="uid://bttitv0tct00p"]
 
 [ext_resource type="Texture2D" uid="uid://dd2qfn2sdpupk" path="res://assets/knight.png" id="1_4flbx"]
-[ext_resource type="Script" uid="uid://bltfol42f2cvy" path="res://scripts/player.gd" id="1_dqkch"]
+[ext_resource type="Script" uid="uid://rfdttc0yqq0v" path="res://scripts/player_v2.gd" id="1_fjrip"]
 [ext_resource type="Script" uid="uid://bsr56ror3x32" path="res://scripts/player_animation_tree.gd" id="3_dqkch"]
 [ext_resource type="Script" uid="uid://b4xdu0rho08pi" path="res://scripts/hurt_box.gd" id="3_qhqgy"]
 [ext_resource type="PackedScene" uid="uid://did7661fq6pmn" path="res://scenes/health_bar.tscn" id="5_qlg0r"]
@@ -169,31 +169,39 @@ advance_condition = &"run"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ur7pv"]
 advance_mode = 2
-advance_expression = "is_rolling"
+advance_condition = &"dashing"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_y4r1p"]
 advance_mode = 2
-advance_expression = "is_rolling"
+advance_condition = &"dashing"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_d2wvv"]
 advance_mode = 2
-advance_expression = "is_taking_hit"
+advance_condition = &"taking_hit"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3v2ag"]
 advance_mode = 2
-advance_expression = "is_taking_hit"
+advance_condition = &"taking_hit"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jej6c"]
 advance_mode = 2
-advance_expression = "!is_taking_hit"
+advance_condition = &"idle"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_f1ej7"]
 advance_mode = 2
-advance_expression = "death_activated"
+advance_condition = &"dead"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_a8ls1"]
 advance_mode = 2
-advance_expression = "!is_rolling"
+advance_condition = &"idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_oprun"]
+advance_mode = 2
+advance_condition = &"run"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qfm1y"]
+advance_mode = 2
+advance_condition = &"run"
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_fjrip"]
 states/death/node = SubResource("AnimationNodeAnimation_smehm")
@@ -206,11 +214,11 @@ states/run/node = SubResource("AnimationNodeAnimation_dqkch")
 states/run/position = Vector2(362.074, 80.4801)
 states/take_damage/node = SubResource("AnimationNodeAnimation_fjrip")
 states/take_damage/position = Vector2(594.222, 263.333)
-transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_fjrip"), "Start", "run", SubResource("AnimationNodeStateMachineTransition_qlg0r"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_tuyoq"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_smehm"), "run", "roll", SubResource("AnimationNodeStateMachineTransition_ur7pv"), "idle", "roll", SubResource("AnimationNodeStateMachineTransition_y4r1p"), "idle", "take_damage", SubResource("AnimationNodeStateMachineTransition_d2wvv"), "run", "take_damage", SubResource("AnimationNodeStateMachineTransition_3v2ag"), "take_damage", "idle", SubResource("AnimationNodeStateMachineTransition_jej6c"), "take_damage", "death", SubResource("AnimationNodeStateMachineTransition_f1ej7"), "roll", "idle", SubResource("AnimationNodeStateMachineTransition_a8ls1")]
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_fjrip"), "Start", "run", SubResource("AnimationNodeStateMachineTransition_qlg0r"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_tuyoq"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_smehm"), "run", "roll", SubResource("AnimationNodeStateMachineTransition_ur7pv"), "idle", "roll", SubResource("AnimationNodeStateMachineTransition_y4r1p"), "idle", "take_damage", SubResource("AnimationNodeStateMachineTransition_d2wvv"), "run", "take_damage", SubResource("AnimationNodeStateMachineTransition_3v2ag"), "take_damage", "idle", SubResource("AnimationNodeStateMachineTransition_jej6c"), "take_damage", "death", SubResource("AnimationNodeStateMachineTransition_f1ej7"), "roll", "idle", SubResource("AnimationNodeStateMachineTransition_a8ls1"), "take_damage", "run", SubResource("AnimationNodeStateMachineTransition_oprun"), "roll", "run", SubResource("AnimationNodeStateMachineTransition_qfm1y")]
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("health_controller", "stamina_controller") groups=["Player", "Trappable"]]
 motion_mode = 1
-script = ExtResource("1_dqkch")
+script = ExtResource("1_fjrip")
 health_controller = NodePath("HealthController")
 stamina_controller = NodePath("StaminaController")
 
@@ -234,6 +242,7 @@ texture = ExtResource("1_4flbx")
 hframes = 8
 vframes = 8
 frame = 16
+script = ExtResource("3_dqkch")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
 root_node = NodePath("../..")
@@ -247,11 +256,11 @@ root_node = NodePath("../..")
 tree_root = SubResource("AnimationNodeStateMachine_fjrip")
 advance_expression_base_node = NodePath("../..")
 anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/dashing = false
+parameters/conditions/dead = false
 parameters/conditions/idle = false
 parameters/conditions/run = false
-
-[node name="AnimationScript" type="Node2D" parent="Sprite2D"]
-script = ExtResource("3_dqkch")
+parameters/conditions/taking_hit = false
 
 [node name="CoolDownTimer" type="Timer" parent="."]
 wait_time = 2.0

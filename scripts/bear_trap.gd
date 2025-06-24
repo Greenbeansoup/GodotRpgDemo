@@ -48,9 +48,9 @@ func _on_hit_box_body_entered(body):
 func trigger_trap(body: Entity = null):
 	is_sprung = true
 	self.z_index = 0
-	if body != null and !body.check_is_invulnerable() and does_hold:
+	if body != null and !body.check_is_invulnerable():
 		body.damage_entity(DAMAGE)
-		if body.is_in_group("Trappable"):
+		if body.is_in_group("Trappable") and does_hold:
 			trapped_entity = body
 			body.set_entity_position(position)
 			body.set_entity_velocity(Vector2.ZERO)
@@ -74,7 +74,7 @@ func _on_sprung_timer_timeout():
 		trapped_entity = null
 
 func _on_detection_box_body_entered(body):
-	if body.is_in_group("Trappable") and !is_sprung and !detection_activated and !detection_box_bodies_entered.has(body):
+	if !is_sprung and !detection_activated and !detection_box_bodies_entered.has(body):
 		detection_box_bodies_entered.append(body)
 		detection_activated = true
 		detection_timer.start(DETECTION_TIMEOUT)
