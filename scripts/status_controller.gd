@@ -12,6 +12,21 @@ func _ready():
 		status_bar.max_value = max_value
 		status_bar.value = value
 
+func set_max_value(value: float):
+	max_value = value
+	if status_bar != null:
+		status_bar.max_value = value
+
+func set_value(value: float):
+	self.value = value
+	if status_bar != null:
+		status_bar.value = value
+
+func set_min_value(value: float):
+	min_value = value
+	if status_bar != null:
+		status_bar.min_value = value
+
 func decrement_value(decrement_value: float):
 	change_value(-decrement_value)
 	

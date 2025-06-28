@@ -6,7 +6,7 @@ class_name BearTrap extends Trap
 @onready var grab_box = $GrabBox
 
 const DETECTION_TIMEOUT = 0.5
-const DAMAGE = 40.0
+const DAMAGE = 50.0
 
 var is_sprung = false
 var detection_activated = false
@@ -49,7 +49,6 @@ func trigger_trap(body: Entity = null):
 	is_sprung = true
 	self.z_index = 0
 	if body != null and !body.check_is_invulnerable():
-		body.damage_entity(DAMAGE)
 		if body.is_in_group("Trappable") and does_hold:
 			trapped_entity = body
 			body.set_entity_position(position)
@@ -61,9 +60,23 @@ func trigger_trap(body: Entity = null):
 			body.hide()
 		else:
 			animated_sprite_2d.play("slime_trapped_green")
+	elif body != null and body is BossSlime:
+		if (body as BossSlime).slime_type == BossSlime.SLIME_TYPE.PURPLE:
+			print("Type was purp")
+			animated_sprite_2d.play("slime_trapped_purple")
+		else:
+			animated_sprite_2d.play("slime_trapped_green")
+		if (body as BossSlime).health_controller.get_value() - DAMAGE <= 0:
+				body.hide()
+				trapped_entity = body
+				body.set_entity_position(position)
+				body.set_entity_velocity(Vector2.ZERO)
 	else:
 		animated_sprite_2d.play("trigger")
 		sprung_timer.start(hold_length)
+	
+	if body != null: 
+		body.damage_entity(DAMAGE)
 
 func _on_sprung_timer_timeout():
 	self.z_index = -1
@@ -94,7 +107,7 @@ func _on_detection_box_body_exited(body):
 	
 func _on_animation_finished():
 	var anim_name: String = animated_sprite_2d.animation
-	if anim_name == "slime_trapped_purple":
+	if anim_name == "slime_trapped_purple" and trapped_entity != null:
 		is_sprung = false
 		self.z_index = -1
 		animated_sprite_2d.play("idle")

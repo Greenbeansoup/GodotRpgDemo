@@ -26,11 +26,12 @@ can_move = true
 position = Vector2(38, -135)
 health_controller = NodePath("HealthController")
 target = NodePath("../Player")
-initial_scale = 5.0
-max_health = 500.0
+initial_scale = 4.0
 
 [node name="HealthController" type="Node2D" parent="BossSlime" node_paths=PackedStringArray("status_bar")]
 script = ExtResource("5_4brrt")
+value = 500.0
+max_value = 500.0
 status_bar = NodePath("HealthBar")
 metadata/_custom_type_script = "uid://cvxmf2aqekvng"
 
@@ -41,31 +42,31 @@ offset_right = 15.0
 offset_bottom = -15.0
 
 [node name="BearTrap" parent="." instance=ExtResource("7_htu68")]
-position = Vector2(-68, 12)
+position = Vector2(-162, -42)
 
 [node name="BearTrap2" parent="." instance=ExtResource("7_htu68")]
-position = Vector2(-37, 35)
+position = Vector2(232, -11)
 
 [node name="BearTrap3" parent="." instance=ExtResource("7_htu68")]
-position = Vector2(-36, 10)
+position = Vector2(133, -140)
 
 [node name="BearTrap4" parent="." instance=ExtResource("7_htu68")]
-position = Vector2(-68, -11)
+position = Vector2(-64, 38)
 
 [node name="BearTrap5" parent="." instance=ExtResource("7_htu68")]
-position = Vector2(-35, -34)
+position = Vector2(114, 32)
 
 [node name="BearTrap6" parent="." instance=ExtResource("7_htu68")]
-position = Vector2(-67, -58)
+position = Vector2(-147, -111)
 
 [node name="BearTrap7" parent="." instance=ExtResource("7_htu68")]
-position = Vector2(-68, -34)
+position = Vector2(-42, -32)
 
 [node name="BearTrap8" parent="." instance=ExtResource("7_htu68")]
-position = Vector2(-72, 36)
+position = Vector2(112, -53)
 
 [node name="BearTrap9" parent="." instance=ExtResource("7_htu68")]
-position = Vector2(-35, -12)
+position = Vector2(-41, -158)
 
 [node name="BearTrap10" parent="." instance=ExtResource("7_htu68")]
-position = Vector2(-34, -58)
+position = Vector2(238, -123)

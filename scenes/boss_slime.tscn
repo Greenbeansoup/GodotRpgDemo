@@ -6,11 +6,8 @@
 [ext_resource type="Script" uid="uid://bvgxu5nkfsasw" path="res://scripts/boss_slime_animation.gd" id="4_vd2mp"]
 [ext_resource type="Script" uid="uid://bm03sebpowi0g" path="res://scripts/hit_box.gd" id="5_r3e0i"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_vd2mp"]
-size = Vector2(54.5, 13)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7lci5"]
-size = Vector2(54, 36)
+size = Vector2(12, 5)
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1vp13"]
 animation = &"asleep"
@@ -75,7 +72,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("ScaleNode/Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -91,7 +88,7 @@ length = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("ScaleNode/Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -107,7 +104,7 @@ length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("ScaleNode/Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -124,7 +121,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("ScaleNode/Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -140,7 +137,7 @@ length = 0.3
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("ScaleNode/Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -160,54 +157,60 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1vp13"]
-size = Vector2(52, 6)
+size = Vector2(12, 2)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vd2mp"]
+size = Vector2(12, 7)
 
 [node name="BossSlime" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_7lci5")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.25, -9.5)
-shape = SubResource("RectangleShape2D_vd2mp")
+[node name="ScaleNode" type="Node2D" parent="."]
 
-[node name="HurtBox" type="Area2D" parent="."]
+[node name="HurtBox" type="Area2D" parent="ScaleNode"]
+position = Vector2(0, 2)
 script = ExtResource("2_64n04")
 metadata/_custom_type_script = "uid://b4xdu0rho08pi"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
-position = Vector2(0, -24)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ScaleNode/HurtBox"]
+position = Vector2(0, -7.5)
 shape = SubResource("RectangleShape2D_7lci5")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -48)
-scale = Vector2(4, 4)
+[node name="Sprite2D" type="Sprite2D" parent="ScaleNode"]
+position = Vector2(0, -12)
 texture = ExtResource("3_7lci5")
 hframes = 4
 vframes = 3
 frame = 4
 script = ExtResource("4_vd2mp")
 
-[node name="AnimationTree" type="AnimationTree" parent="Sprite2D"]
-root_node = NodePath("../..")
+[node name="AnimationTree" type="AnimationTree" parent="ScaleNode/Sprite2D"]
+root_node = NodePath("../../..")
 tree_root = SubResource("AnimationNodeStateMachine_hrocv")
-advance_expression_base_node = NodePath("../..")
+advance_expression_base_node = NodePath("../../..")
 anim_player = NodePath("../AnimationPlayer")
 parameters/conditions/asleepen = false
 parameters/conditions/awaken = false
 parameters/conditions/take_damage = false
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
-root_node = NodePath("../..")
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ScaleNode/Sprite2D"]
+root_node = NodePath("../../..")
 libraries = {
 &"": SubResource("AnimationLibrary_1vp13")
 }
 
-[node name="HitBox" type="Area2D" parent="."]
+[node name="HitBox" type="Area2D" parent="ScaleNode"]
+position = Vector2(0, 2)
 script = ExtResource("5_r3e0i")
 damage = 50.0
 metadata/_custom_type_script = "uid://bm03sebpowi0g"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
-position = Vector2(0, -5)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ScaleNode/HitBox"]
+position = Vector2(0, -4)
 shape = SubResource("RectangleShape2D_1vp13")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -4.5)
+shape = SubResource("RectangleShape2D_vd2mp")
