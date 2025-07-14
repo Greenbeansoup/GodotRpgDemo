@@ -4,6 +4,7 @@ extends Node2D
 @onready var red_apple = $RedApple
 @onready var player: Player = $Player
 
+@onready var audio_stream_player = $AudioStreamPlayer
 
 
 enum Fruit_Shapes { APPLE = 0, PEAR = 1, GRAPE = 2}
@@ -13,6 +14,7 @@ enum Fruit_Colors { GREEN = 0, RED = 3}
 func _ready():
 	green_pear.set_fruit(Fruit_Shapes.PEAR, Fruit_Colors.GREEN)
 	red_apple.set_fruit(Fruit_Shapes.APPLE, Fruit_Colors.RED)
+	audio_stream_player.volume_db = Globals.volume_value_db
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

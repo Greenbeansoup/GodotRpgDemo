@@ -11,3 +11,6 @@ const HARMONIC_SERIES = [
 	2.0833333333333,
 	2.2833333333333
 ]
+
+var volume_value_db = 0.0
+var volume_value_offset = 50.0

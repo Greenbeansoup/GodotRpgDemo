@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=4 uid="uid://bldnlx4akxv6p"]
+[gd_scene load_steps=9 format=4 uid="uid://bldnlx4akxv6p"]
 
 [ext_resource type="Script" uid="uid://c6cykv5rm1tl7" path="res://scripts/game.gd" id="1_gee14"]
 [ext_resource type="PackedScene" uid="uid://mjk2mswcxqu2" path="res://scenes/main_menu.tscn" id="2_lnu2h"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bttitv0tct00p" path="res://scenes/player.tscn" id="2_yqjtg"]
 [ext_resource type="PackedScene" uid="uid://tw8xb2ol0eox" path="res://scenes/slime_old.tscn" id="6_p57ef"]
 [ext_resource type="PackedScene" uid="uid://c1278dg48601a" path="res://scenes/fruit.tscn" id="8_0tnpc"]
+[ext_resource type="AudioStream" uid="uid://b1fxh6r38r734" path="res://assets/SoulIntro.wav" id="8_gee14"]
 [ext_resource type="PackedScene" uid="uid://bimby2tv6kwdh" path="res://scenes/bear_trap.tscn" id="9_0tnpc"]
 
 [node name="Game" type="Node2D"]
@@ -44,3 +45,7 @@ position = Vector2(55, -62)
 
 [node name="BearTrap" parent="." instance=ExtResource("9_0tnpc")]
 position = Vector2(129, -40)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_gee14")
+autoplay = true
