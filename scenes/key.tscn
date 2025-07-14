@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://b784jogk4riyq"]
+
+[ext_resource type="Script" uid="uid://w755g7n4q2l4" path="res://scripts/key.gd" id="1_fttkb"]
+[ext_resource type="Texture2D" uid="uid://bk70l07uibrx1" path="res://assets/GoldKey.png" id="1_yk2u2"]
+[ext_resource type="Script" uid="uid://b5rx01rok1480" path="res://scripts/touch_box.gd" id="3_wy8tx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fttkb"]
+size = Vector2(19, 13)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_brs3p"]
+size = Vector2(19, 13)
+
+[node name="Key" type="StaticBody2D"]
+collision_layer = 4
+script = ExtResource("1_fttkb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, -5.5)
+shape = SubResource("RectangleShape2D_fttkb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -6)
+texture = ExtResource("1_yk2u2")
+
+[node name="TouchBox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_wy8tx")
+metadata/_custom_type_script = "uid://b5rx01rok1480"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TouchBox"]
+position = Vector2(0.5, -5.5)
+shape = SubResource("RectangleShape2D_brs3p")

@@ -1,12 +1,13 @@
-[gd_scene load_steps=8 format=4 uid="uid://h7u847obepq4"]
+[gd_scene load_steps=9 format=4 uid="uid://h7u847obepq4"]
 
 [ext_resource type="TileSet" uid="uid://c1ur4wucfs63s" path="res://scenes/levels/world_tiles.tres" id="1_egl6x"]
 [ext_resource type="PackedScene" uid="uid://bttitv0tct00p" path="res://scenes/player.tscn" id="2_xjnh2"]
 [ext_resource type="PackedScene" uid="uid://bk7mxp32ht3kg" path="res://scenes/player_camera.tscn" id="3_s42hq"]
-[ext_resource type="PackedScene" uid="uid://dun8xlksty5cs" path="res://scenes/boss_slime.tscn" id="4_s42hq"]
+[ext_resource type="PackedScene" uid="uid://dun8xlksty5cs" path="res://scenes/slime.tscn" id="4_s42hq"]
 [ext_resource type="Script" uid="uid://cvxmf2aqekvng" path="res://scripts/status_controller.gd" id="5_4brrt"]
 [ext_resource type="PackedScene" uid="uid://did7661fq6pmn" path="res://scenes/health_bar.tscn" id="5_i8g6w"]
 [ext_resource type="PackedScene" uid="uid://bimby2tv6kwdh" path="res://scenes/bear_trap.tscn" id="7_htu68"]
+[ext_resource type="PackedScene" uid="uid://b784jogk4riyq" path="res://scenes/key.tscn" id="8_gq0uu"]
 
 [node name="TestArena" type="Node2D"]
 y_sort_enabled = true
@@ -26,8 +27,11 @@ can_move = true
 position = Vector2(38, -135)
 health_controller = NodePath("HealthController")
 target = NodePath("../Player")
+aggro_range = 100
+de_aggro_range = 200
 initial_scale = 5.0
 max_health = 500.0
+slime_initial_state = 0
 
 [node name="HealthController" type="Node2D" parent="BossSlime" node_paths=PackedStringArray("status_bar")]
 script = ExtResource("5_4brrt")
@@ -69,3 +73,7 @@ position = Vector2(-35, -12)
 
 [node name="BearTrap10" parent="." instance=ExtResource("7_htu68")]
 position = Vector2(-34, -58)
+
+[node name="Key" parent="." instance=ExtResource("8_gq0uu")]
+position = Vector2(-50, -129)
+scale = Vector2(0.25, 0.25)

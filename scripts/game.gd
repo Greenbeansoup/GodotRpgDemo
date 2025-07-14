@@ -2,7 +2,7 @@ extends Node2D
 
 @onready var green_pear = $GreenPear
 @onready var red_apple = $RedApple
-@onready var player = $Player
+@onready var player: Player = $Player
 
 
 
@@ -16,5 +16,5 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if player.dead:
+	if player.player_state_machine.current_state == "DEAD":
 		get_tree().reload_current_scene()

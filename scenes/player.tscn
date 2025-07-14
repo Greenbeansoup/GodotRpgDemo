@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://bttitv0tct00p"]
+[gd_scene load_steps=39 format=3 uid="uid://bttitv0tct00p"]
 
 [ext_resource type="Texture2D" uid="uid://dd2qfn2sdpupk" path="res://assets/knight.png" id="1_4flbx"]
 [ext_resource type="Script" uid="uid://rfdttc0yqq0v" path="res://scripts/player_v2.gd" id="1_fjrip"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://did7661fq6pmn" path="res://scenes/health_bar.tscn" id="5_qlg0r"]
 [ext_resource type="Script" uid="uid://cvxmf2aqekvng" path="res://scripts/status_controller.gd" id="8_smehm"]
 [ext_resource type="PackedScene" uid="uid://crmv5gq3xcca4" path="res://scenes/stamina_bar.tscn" id="8_ur7pv"]
+[ext_resource type="Script" uid="uid://docogw3iqa1qb" path="res://scripts/item_container.gd" id="8_y4r1p"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tuyoq"]
 size = Vector2(9, 6)
@@ -221,6 +222,7 @@ states/take_damage/position = Vector2(594.222, 263.333)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_fjrip"), "Start", "run", SubResource("AnimationNodeStateMachineTransition_qlg0r"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_tuyoq"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_smehm"), "run", "roll", SubResource("AnimationNodeStateMachineTransition_ur7pv"), "idle", "roll", SubResource("AnimationNodeStateMachineTransition_y4r1p"), "idle", "take_damage", SubResource("AnimationNodeStateMachineTransition_d2wvv"), "run", "take_damage", SubResource("AnimationNodeStateMachineTransition_3v2ag"), "take_damage", "idle", SubResource("AnimationNodeStateMachineTransition_jej6c"), "take_damage", "death", SubResource("AnimationNodeStateMachineTransition_f1ej7"), "roll", "idle", SubResource("AnimationNodeStateMachineTransition_a8ls1"), "take_damage", "run", SubResource("AnimationNodeStateMachineTransition_oprun"), "roll", "run", SubResource("AnimationNodeStateMachineTransition_qfm1y"), "take_damage", "roll", SubResource("AnimationNodeStateMachineTransition_fulsm")]
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("health_controller", "stamina_controller") groups=["Player", "Trappable"]]
+collision_layer = 512
 motion_mode = 1
 script = ExtResource("1_fjrip")
 health_controller = NodePath("HealthController")
@@ -228,6 +230,8 @@ stamina_controller = NodePath("StaminaController")
 
 [node name="HurtBox" type="Area2D" parent="."]
 position = Vector2(0, -12)
+collision_layer = 0
+collision_mask = 6
 script = ExtResource("3_qhqgy")
 metadata/_custom_type_script = "uid://b4xdu0rho08pi"
 
@@ -301,6 +305,10 @@ offset_bottom = -24.0
 
 [node name="RollTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="ItemContainer" type="Node2D" parent="."]
+script = ExtResource("8_y4r1p")
+metadata/_custom_type_script = "uid://docogw3iqa1qb"
 
 [connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="area_entered" from="HurtBox" to="." method="_on_hurt_box_entered"]

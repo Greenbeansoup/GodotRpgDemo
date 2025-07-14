@@ -24,8 +24,8 @@ func anim_take_damage():
 func anim_take_damage_stop():
 	animation_tree.set("parameters/conditions/take_damage", false)
 
-func set_slime_texture(color: BossSlime.SLIME_TYPE):
-	if color == BossSlime.SLIME_TYPE.GREEN:
+func set_slime_texture(color: Slime.SLIME_TYPE):
+	if color == Slime.SLIME_TYPE.GREEN:
 		texture = load("res://assets/slime_green.png")
-	elif color == BossSlime.SLIME_TYPE.PURPLE:
+	elif color == Slime.SLIME_TYPE.PURPLE:
 		texture = load("res://assets/slime_purple.png")

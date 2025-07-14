@@ -1,13 +1,15 @@
-extends Entity
+class_name Player extends Entity
 
 @onready var animation_tree = $Sprite2D/AnimationTree
 @onready var player_sprite = $Sprite2D
 @onready var roll_timer = $RollTimer
 @onready var cool_down_timer = $CoolDownTimer
 @onready var death_timer = $DeathTimer
+@onready var item_container: ItemContainer = $ItemContainer
 
 @export var health_controller: StatusController
 @export var stamina_controller: StatusController
+@export var inventory_item: Node2D
 
 @export_enum("IDLE:0", "RUNNING:1", "DASHING:2", "TAKING_DAMAGE:3", "DEAD:4") var initial_player_state: int
 enum PLAYER_STATES { IDLE, RUNNING, DASHING, TAKING_DAMAGE, DEAD }
@@ -23,6 +25,8 @@ const DEATH_TIMEOUT = 2
 
 var stamina_can_refill = true
 var roll_velocity = Vector2.ZERO
+var recoil_vector: Vector2 = Vector2.ZERO
+var recoil_timer: Timer
 
 var player_state_machine: FiniteStateMachine
 
@@ -30,18 +34,36 @@ func _on_ready():
 	roll_timer.connect("timeout", _on_roll_timer_timeout)
 	cool_down_timer.connect("timeout", _on_dash_delay_cooldown_timeout)
 	death_timer.connect("timeout", _on_death_timeout)
+	
+	recoil_timer = Timer.new()
+	recoil_timer.one_shot = true
+	recoil_timer.connect("timeout", _on_recoil_timer_timeout)
+	add_child(recoil_timer)
+	
 	if health_controller != null:
 		health_controller.connect("status_changed", _on_health_changed)
+		
+	if inventory_item != null:
+		remove_child(inventory_item)
+		item_container.add_child(inventory_item)
+		inventory_item.global_position = item_container.global_position
+	item_container.top_level = true # tells item container to ignore parent position data
 
 	player_state_machine = FiniteStateMachine.new()
 	player_state_machine.add_state(_state_name(PLAYER_STATES.IDLE), player_sprite.anim_idle)
 	player_state_machine.add_state(_state_name(PLAYER_STATES.RUNNING), player_sprite.anim_run)
-	player_state_machine.add_state(_state_name(PLAYER_STATES.DASHING), _on_dash_entered)
+	player_state_machine.add_state(_state_name(PLAYER_STATES.DASHING), _on_dash_entered, _on_dash_exited)
 	player_state_machine.add_state(_state_name(PLAYER_STATES.TAKING_DAMAGE), _on_take_damage)
 	player_state_machine.add_state(_state_name(PLAYER_STATES.DEAD), _on_death)
 	player_state_machine.change_state(_state_name(initial_player_state))
 
 func _physics_process(delta):
+	if item_container != null:
+		var x_add = 15
+		if !player_sprite.flip_h: 
+			x_add = -15
+		item_container.set_item_position(item_container.global_position.lerp(Vector2(global_position.x + x_add, global_position.y - 8.0), 3 * delta))
+	
 	if _is_state(PLAYER_STATES.DEAD):
 		return
 		
@@ -60,6 +82,10 @@ func _physics_process(delta):
 		if _is_state(PLAYER_STATES.RUNNING):
 			if pre_velocity.x == 0 and pre_velocity.y == 0:
 				_set_state(PLAYER_STATES.IDLE)
+	else:
+		print("Taking damage")
+		pre_velocity = recoil_vector
+		move_force = 200.0
 	if Input.is_action_just_pressed("roll"):
 		_set_state(PLAYER_STATES.DASHING)
 	if _is_state(PLAYER_STATES.DASHING):
@@ -80,6 +106,7 @@ func _physics_process(delta):
 		
 func _on_dash_entered():
 	if stamina_controller.get_value() >= DASH_STAMINA_COST:
+		is_invulnerable = true
 		player_sprite.anim_dashing()
 		stamina_can_refill = false
 		stamina_controller.decrement_value(DASH_STAMINA_COST)
@@ -88,6 +115,9 @@ func _on_dash_entered():
 		roll_timer.start(ROLL_LENGTH)
 	else:
 		_set_state(PLAYER_STATES.IDLE)
+		
+func _on_dash_exited():
+	is_invulnerable = false
 
 func _state_name(state: PLAYER_STATES) -> String:
 	return PLAYER_STATES.keys()[state]
@@ -111,17 +141,24 @@ func damage_entity(value: float):
 	_set_state(PLAYER_STATES.TAKING_DAMAGE)
 	if health_controller != null:
 		health_controller.decrement_value(value)
+		
+func remove_item_from_inventory(item: Node2D):
+	if inventory_item == item:
+		inventory_item.queue_free()
+		inventory_item = null
 
 func _on_take_damage():
 	player_sprite.anim_taking_hit()
+	
 
 func _on_health_changed(oldValue, newValue):
 	if newValue == 0:
 		_set_state(PLAYER_STATES.DEAD)
 		
 func _on_animation_tree_animation_finished(anim_name):
-	if (anim_name == "take_damage"):
-		_set_state(PLAYER_STATES.IDLE)
+	pass
+	#if (anim_name == "take_damage"):
+	#	_set_state(PLAYER_STATES.IDLE)
 		
 func _on_death():
 	player_sprite.anim_death()
@@ -129,13 +166,29 @@ func _on_death():
 
 func _on_death_timeout():
 	get_tree().reload_current_scene()
+	
+func _recoil_from_point(source: Vector2):
+	recoil_vector = (global_position - source).normalized()
+	recoil_timer.start(0.1)
+
+func _on_recoil_timer_timeout():
+	print("Recoil timeout")
+	_set_state(PLAYER_STATES.IDLE)
 
 func _on_hurt_box_entered(body):
 	if body is HitBox and !is_invulnerable:
 		damage_entity(body.damage)
+		_recoil_from_point(body.global_position)
 	elif body is TouchBox:
-		if body.entity_name == Globals.Fruit_Colors.RED:
+		var body_parent = body.get_parent()
+		if body.entity_type == str(Globals.Fruit_Colors.RED):
 			health_controller.increment_value(body.value)
-		elif body.entity_name == Globals.Fruit_Colors.GREEN:
+			body_parent.queue_free()
+		elif body.entity_type == str(Globals.Fruit_Colors.GREEN):
 			# TODO figure out a purpose for green stuff
 			print("Green thing found")
+			body_parent.queue_free()
+		elif body_parent is KeyItem:
+			body_parent.reparent(item_container)
+			inventory_item = body_parent
+			inventory_item.global_position = item_container.global_position

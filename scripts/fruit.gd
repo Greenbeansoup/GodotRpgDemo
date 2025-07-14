@@ -1,10 +1,11 @@
-extends Sprite2D
-@onready var fruit: Sprite2D = $"."
+class_name FruitItem extends DroppableItem
+@onready var fruit: Sprite2D = $"Fruit"
 @onready var touch_box = $TouchBox
+@onready var collision_shape_2d = $TouchBox/CollisionShape2D
 
 func set_fruit(fruit_shape: Globals.Fruit_Shapes, fruit_color: Globals.Fruit_Colors):
 	fruit.frame_coords = Vector2(fruit_shape, fruit_color)
-	touch_box.entity_name = fruit_color
+	touch_box.entity_type = str(fruit_color)
 	
 	match fruit_shape:
 		Globals.Fruit_Shapes.APPLE:
@@ -14,6 +15,15 @@ func set_fruit(fruit_shape: Globals.Fruit_Shapes, fruit_color: Globals.Fruit_Col
 		Globals.Fruit_Shapes.GRAPE:
 			touch_box.value = 10
 
-func _on_touch_box_entered(body):
-	if body.is_in_group("Player"):
-		fruit.queue_free()
+func drop() -> void:
+	scale = Vector2(1.0, 1.0)
+	var randomDirection = _get_random_direction()
+	var tween = get_tree().create_tween()
+	tween.tween_property(self, "global_position", global_position + randomDirection * 30, .5).set_trans(Tween.TRANS_EXPO)
+	tween.tween_callback(set_touch_box_enabled.bind(true))
+	
+func _get_random_direction() -> Vector2:
+	return Vector2.DOWN.rotated(rng.randf() * 2 * PI)
+	
+func set_touch_box_enabled(enabled: bool) -> void:
+	collision_shape_2d.set_deferred("disabled", !enabled)

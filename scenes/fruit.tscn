@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://c1278dg48601a"]
+[gd_scene load_steps=6 format=3 uid="uid://c1278dg48601a"]
 
 [ext_resource type="Texture2D" uid="uid://wclfe0rvvega" path="res://assets/fruit.png" id="1_yvtr8"]
 [ext_resource type="Script" uid="uid://bpwtnagti5fw0" path="res://scripts/fruit.gd" id="2_t2alg"]
@@ -7,14 +7,23 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_64keg"]
 size = Vector2(9, 16)
 
-[node name="Fruit" type="Sprite2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t2alg"]
+size = Vector2(9, 16)
+
+[node name="StaticBody2D" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("2_t2alg")
+
+[node name="Fruit" type="Sprite2D" parent="."]
 texture = ExtResource("1_yvtr8")
 hframes = 4
 vframes = 4
 frame = 1
-script = ExtResource("2_t2alg")
 
 [node name="TouchBox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
 script = ExtResource("3_t2alg")
 metadata/_custom_type_script = "uid://b5rx01rok1480"
 
@@ -22,4 +31,8 @@ metadata/_custom_type_script = "uid://b5rx01rok1480"
 position = Vector2(0.5, 0)
 shape = SubResource("RectangleShape2D_64keg")
 
-[connection signal="body_entered" from="TouchBox" to="." method="_on_touch_box_entered"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_t2alg")
+
+[connection signal="body_entered" from="TouchBox" to="Fruit" method="_on_touch_box_entered"]

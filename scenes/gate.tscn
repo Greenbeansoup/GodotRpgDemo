@@ -1,0 +1,130 @@
+[gd_scene load_steps=10 format=3 uid="uid://cxcm1ba6n2s7f"]
+
+[ext_resource type="Script" uid="uid://bn8r56htfyohm" path="res://scripts/gate.gd" id="1_hudsw"]
+[ext_resource type="Texture2D" uid="uid://b26nuorwyt6fr" path="res://assets/Gate.png" id="1_xfvdi"]
+[ext_resource type="Script" uid="uid://xias512jahte" path="res://scripts/detection_box.gd" id="2_xwxio"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xwxio"]
+size = Vector2(32, 8.75)
+
+[sub_resource type="Animation" id="Animation_xwxio"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mask/Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-1.67187e-15, -0.0368422)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("DetectionBox/DetectionField:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_xfvdi"]
+resource_name = "open"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mask/Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-1.67187e-15, -0.0368422), Vector2(-1.67187e-15, -0.942105)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("DetectionBox/DetectionField:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.100963),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hudsw"]
+_data = {
+&"RESET": SubResource("Animation_xwxio"),
+&"open": SubResource("Animation_xfvdi")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xfvdi"]
+size = Vector2(32, 21)
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_hudsw"]
+
+[node name="Gate" type="StaticBody2D"]
+script = ExtResource("1_hudsw")
+
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
+position = Vector2(0, -6.375)
+shape = SubResource("RectangleShape2D_xwxio")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_hudsw")
+}
+
+[node name="DetectionBox" type="Area2D" parent="."]
+collision_mask = 512
+script = ExtResource("2_xwxio")
+metadata/_custom_type_script = "uid://xias512jahte"
+
+[node name="DetectionField" type="CollisionShape2D" parent="DetectionBox"]
+position = Vector2(0, -6.5)
+shape = SubResource("RectangleShape2D_xfvdi")
+
+[node name="Mask" type="Sprite2D" parent="."]
+clip_children = 1
+position = Vector2(5.68434e-14, -19.25)
+scale = Vector2(34, 47.5)
+texture = SubResource("CanvasTexture_hudsw")
+
+[node name="Sprite2D" type="Sprite2D" parent="Mask"]
+position = Vector2(-1.67187e-15, -0.0368422)
+scale = Vector2(0.0294118, 0.0210526)
+texture = ExtResource("1_xfvdi")

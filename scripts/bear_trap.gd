@@ -54,29 +54,21 @@ func trigger_trap(body: Entity = null):
 			body.set_entity_position(position)
 			body.set_entity_velocity(Vector2.ZERO)
 			body.set_entity_can_move(false)
+			body.damage_entity(DAMAGE)
 	if body != null and body is Slime:
-		if (body as Slime).slime_type == Slime.Slime_Type.PURPLE:
+		if (body as Slime).slime_type == Slime.SLIME_TYPE.PURPLE:
 			animated_sprite_2d.play("slime_trapped_purple")
+		else:
+			animated_sprite_2d.play("slime_trapped_green")
+		if (body as Slime).health_controller.get_value() - DAMAGE <= 0:
 			body.hide()
-		else:
-			animated_sprite_2d.play("slime_trapped_green")
-	elif body != null and body is BossSlime:
-		if (body as BossSlime).slime_type == BossSlime.SLIME_TYPE.PURPLE:
-			print("Type was purp")
-			animated_sprite_2d.play("slime_trapped_purple")
-		else:
-			animated_sprite_2d.play("slime_trapped_green")
-		if (body as BossSlime).health_controller.get_value() - DAMAGE <= 0:
-				body.hide()
-				trapped_entity = body
-				body.set_entity_position(position)
-				body.set_entity_velocity(Vector2.ZERO)
+			trapped_entity = body
+			body.set_entity_position(position)
+			body.set_entity_velocity(Vector2.ZERO)
+		body.damage_entity(DAMAGE)
 	else:
 		animated_sprite_2d.play("trigger")
 		sprung_timer.start(hold_length)
-	
-	if body != null: 
-		body.damage_entity(DAMAGE)
 
 func _on_sprung_timer_timeout():
 	self.z_index = -1
