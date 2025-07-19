@@ -120,6 +120,7 @@ func _physics_process(delta):
 
 func _on_hurt_box_entered(body):
 	if body is HitBox and body.is_in_group("Player_Weapon"):
+		print("Player weapon ouch")
 		health_controller.decrement_value(body.damage)
 	elif body is TouchBox and visible == true:
 		var body_parent = body.get_parent()
