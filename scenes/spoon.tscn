@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=3 uid="uid://dfnsnru8stsm8"]
+
+[ext_resource type="Script" uid="uid://dn3tjsjkt8ul5" path="res://scripts/spoon.gd" id="1_cax38"]
+[ext_resource type="Texture2D" uid="uid://culm4l2qrglty" path="res://assets/spoon.png" id="2_r8mox"]
+[ext_resource type="Script" uid="uid://bm03sebpowi0g" path="res://scripts/hit_box.gd" id="3_r8mox"]
+[ext_resource type="Script" uid="uid://b5rx01rok1480" path="res://scripts/touch_box.gd" id="4_r8ydw"]
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_r8ydw"]
+points = PackedVector2Array(9, -20, 4, -25, -8, -10, -5, -8)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_r8ydw"]
+radius = 3.53553
+height = 9.8995
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fyayl"]
+radius = 4.0
+height = 20.0
+
+[node name="Spoon" type="StaticBody2D" groups=["Player_Weapon"]]
+collision_layer = 8
+script = ExtResource("1_cax38")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -8)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_r8mox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 8)
+shape = SubResource("ConvexPolygonShape2D_r8ydw")
+
+[node name="HitBox" type="Area2D" parent="."]
+position = Vector2(0, 8)
+script = ExtResource("3_r8mox")
+metadata/_custom_type_script = "uid://bm03sebpowi0g"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(4, -20)
+rotation = 0.785398
+shape = SubResource("CapsuleShape2D_r8ydw")
+
+[node name="TouchBox" type="Area2D" parent="."]
+position = Vector2(0, 8)
+collision_layer = 4
+script = ExtResource("4_r8ydw")
+metadata/_custom_type_script = "uid://b5rx01rok1480"
+
+[node name="TouchCollision" type="CollisionShape2D" parent="TouchBox"]
+position = Vector2(0, -16)
+rotation = 0.785398
+shape = SubResource("CapsuleShape2D_fyayl")

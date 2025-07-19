@@ -6,10 +6,13 @@ class_name Player extends Entity
 @onready var cool_down_timer = $CoolDownTimer
 @onready var death_timer = $DeathTimer
 @onready var item_container: ItemContainer = $ItemContainer
+@onready var active_weapon_container = $ActiveWeaponContainer
+@onready var active_weapon_animation_player = $ActiveWeaponContainer/AnimationPlayer
 
 @export var health_controller: StatusController
 @export var stamina_controller: StatusController
 @export var inventory_item: Node2D
+@export var active_weapon: Weapon
 
 @export_enum("IDLE:0", "RUNNING:1", "DASHING:2", "TAKING_DAMAGE:3", "DEAD:4") var initial_player_state: int
 enum PLAYER_STATES { IDLE, RUNNING, DASHING, TAKING_DAMAGE, DEAD }
@@ -34,6 +37,7 @@ func _on_ready():
 	roll_timer.connect("timeout", _on_roll_timer_timeout)
 	cool_down_timer.connect("timeout", _on_dash_delay_cooldown_timeout)
 	death_timer.connect("timeout", _on_death_timeout)
+	active_weapon_animation_player.connect("animation_finished", _on_attack_finish)
 	
 	recoil_timer = Timer.new()
 	recoil_timer.one_shot = true
@@ -69,6 +73,9 @@ func _physics_process(delta):
 		
 	if stamina_controller.get_value() < stamina_controller.max_value and stamina_can_refill:
 		stamina_controller.increment_value(delta * STAMINA_REFILL_SPEED)
+		
+	if Input.is_action_just_pressed("attack"):
+		_attack()
 	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
@@ -93,9 +100,9 @@ func _physics_process(delta):
 		pre_velocity = roll_velocity
 
 	if pre_velocity.x > 0:
-		player_sprite.flip_h = false
+		_flip(false)
 	elif pre_velocity.x < 0:
-		player_sprite.flip_h = true
+		_flip(true)
 	
 	if !can_move:
 		return
@@ -103,6 +110,21 @@ func _physics_process(delta):
 	velocity = pre_velocity.normalized() * move_force
 	
 	move_and_slide()
+	
+
+func _attack():
+	active_weapon_animation_player.play("attack")
+	active_weapon.activate()
+
+func _on_attack_finish(anim_name: String):
+	active_weapon.deactivate()
+
+func _flip(flip_val: bool) -> void:
+	if player_sprite.flip_h != flip_val:
+		player_sprite.flip_h = flip_val
+		active_weapon_container.position.x = (active_weapon_container.position.x +10) * -1 # that 10 is offset to rotate around the player body... why are you frowning
+		active_weapon.flip(flip_val)
+	
 		
 func _on_dash_entered():
 	if stamina_controller.get_value() >= DASH_STAMINA_COST:
@@ -188,7 +210,12 @@ func _on_hurt_box_entered(body):
 			# TODO figure out a purpose for green stuff
 			print("Green thing found")
 			body_parent.queue_free()
-		elif body_parent is KeyItem:
+		elif body_parent is KeyItem and inventory_item == null:
 			body_parent.reparent(item_container)
 			inventory_item = body_parent
 			inventory_item.global_position = item_container.global_position
+		elif body_parent is Weapon and active_weapon == null:
+			body_parent.reparent(active_weapon_container)
+			active_weapon = body_parent
+			active_weapon.global_position = active_weapon_container.global_position
+			active_weapon.position = Vector2(5.0, 3.0) # Yeah kinda arbitrary lmao just puts it in his hand roughly

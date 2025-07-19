@@ -76,38 +76,61 @@ position = Vector2(448, 35)
 target = NodePath("../Player")
 aggro_range = 100
 de_aggro_range = 150
+base_speed = null
+initial_scale = null
+minimum_scale = null
+max_health = null
+min_health = null
 base_damage = 10.0
-slime_initial_state = 0
+slime_initial_state = null
 slime_type = 1
+can_move = null
 
 [node name="Slime2" parent="." node_paths=PackedStringArray("target") instance=ExtResource("7_nqv6o")]
 position = Vector2(434, -31)
 target = NodePath("../Player")
 aggro_range = 100
 de_aggro_range = 150
+base_speed = null
+initial_scale = null
+minimum_scale = null
+max_health = null
+min_health = null
 base_damage = 10.0
-slime_initial_state = 0
+slime_initial_state = null
 slime_type = 1
+can_move = null
 
 [node name="Slime3" parent="." node_paths=PackedStringArray("target") instance=ExtResource("7_nqv6o")]
 position = Vector2(680, -34)
 target = NodePath("../Player")
 aggro_range = 100
 de_aggro_range = 150
+base_speed = null
+initial_scale = null
+minimum_scale = null
+max_health = null
+min_health = null
 base_damage = 10.0
-slime_initial_state = 0
+slime_initial_state = null
 slime_type = 1
+can_move = null
 
 [node name="Slime4" parent="." node_paths=PackedStringArray("drop", "target") instance=ExtResource("7_nqv6o")]
 position = Vector2(971, 12)
 drop = NodePath("../Key")
 target = NodePath("../Player")
+aggro_range = null
 de_aggro_range = 200
+base_speed = null
 initial_scale = 4.0
 minimum_scale = 2.0
 max_health = 80.0
+min_health = null
 base_damage = 10.0
-slime_initial_state = 0
+slime_initial_state = null
+slime_type = null
+can_move = null
 
 [node name="Gate" parent="." instance=ExtResource("8_0uars")]
 position = Vector2(960, -259)

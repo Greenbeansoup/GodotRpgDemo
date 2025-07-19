@@ -220,7 +220,7 @@ slime_initial_state = 1
 [node name="HurtBox" type="Area2D" parent="ScaleNode"]
 position = Vector2(0, 2)
 collision_layer = 0
-collision_mask = 4
+collision_mask = 12
 script = ExtResource("2_64n04")
 metadata/_custom_type_script = "uid://b4xdu0rho08pi"
 

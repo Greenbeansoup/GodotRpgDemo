@@ -123,7 +123,7 @@ func _on_hurt_box_entered(body):
 		health_controller.decrement_value(body.damage)
 	elif body is TouchBox and visible == true:
 		var body_parent = body.get_parent()
-		if drop == null && body_parent is DroppableItem and body_parent.get_parent() != drop_container:
+		if drop == null && body_parent is DroppableItem and body_parent is not Weapon and body_parent.get_parent() != drop_container:
 			(body_parent as DroppableItem).set_touch_box_enabled(false)
 			body_parent.reparent(drop_container)
 			body_parent.global_position = drop_container.global_position
