@@ -15,12 +15,6 @@ func get_id() -> String:
 func set_touch_box_enabled(enabled: bool) -> void:
 	collision_shape_2d.set_deferred("disabled", !enabled)
 
-func drop() -> void:
+func drop(call_back: Callable = set_touch_box_enabled.bind(true)) -> void:
 	scale = Vector2(.5, .5)
-	var randomDirection = _get_random_direction()
-	var tween = get_tree().create_tween()
-	tween.tween_property(self, "global_position", global_position + randomDirection * 30, .5).set_trans(Tween.TRANS_EXPO)
-	tween.tween_callback(set_touch_box_enabled.bind(true))
-	
-func _get_random_direction() -> Vector2:
-	return Vector2.DOWN.rotated(rng.randf() * 2 * PI)
+	super.drop(call_back)

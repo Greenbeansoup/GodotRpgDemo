@@ -76,6 +76,9 @@ func _physics_process(delta):
 		
 	if Input.is_action_just_pressed("attack"):
 		_attack()
+		
+	if Input.is_action_just_pressed('interact'):
+		_interact()
 	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
@@ -111,10 +114,19 @@ func _physics_process(delta):
 	
 	move_and_slide()
 	
+func _interact():
+	if active_weapon != null:
+		active_weapon.reparent(get_tree().current_scene)
+		active_weapon.drop()
+		active_weapon = null
 
 func _attack():
-	active_weapon_animation_player.play("attack")
-	active_weapon.activate()
+	if active_weapon != null:
+		if player_sprite.flip_h:
+			active_weapon_animation_player.play("attack_left")
+		else:
+			active_weapon_animation_player.play("attack")
+		active_weapon.activate()
 
 func _on_attack_finish(anim_name: String):
 	active_weapon.deactivate()
@@ -122,8 +134,9 @@ func _on_attack_finish(anim_name: String):
 func _flip(flip_val: bool) -> void:
 	if player_sprite.flip_h != flip_val:
 		player_sprite.flip_h = flip_val
-		active_weapon_container.position.x = (active_weapon_container.position.x +10) * -1 # that 10 is offset to rotate around the player body... why are you frowning
-		active_weapon.flip(flip_val)
+		active_weapon_container.position.x = (active_weapon_container.position.x) * -1 # that 14 is offset to rotate around the player body... why are you frowning
+		if active_weapon != null:
+			active_weapon.flip(flip_val)
 	
 		
 func _on_dash_entered():
@@ -218,4 +231,4 @@ func _on_hurt_box_entered(body):
 			body_parent.reparent(active_weapon_container)
 			active_weapon = body_parent
 			active_weapon.global_position = active_weapon_container.global_position
-			active_weapon.position = Vector2(5.0, 3.0) # Yeah kinda arbitrary lmao just puts it in his hand roughly
+			active_weapon.flip(player_sprite.flip_h)

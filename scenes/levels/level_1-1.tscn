@@ -115,4 +115,3 @@ key_id = "123"
 
 [node name="Spoon" parent="." instance=ExtResource("10_8dks1")]
 position = Vector2(-89, 11)
-collision_mask = 2

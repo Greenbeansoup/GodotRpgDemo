@@ -21,16 +21,16 @@ collision_layer = 8
 script = ExtResource("1_cax38")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -8)
+position = Vector2(7, -7)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_r8mox")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 8)
+position = Vector2(7, 9)
 shape = SubResource("ConvexPolygonShape2D_r8ydw")
 
 [node name="HitBox" type="Area2D" parent="."]
-position = Vector2(0, 8)
+position = Vector2(7, 9)
 script = ExtResource("3_r8mox")
 metadata/_custom_type_script = "uid://bm03sebpowi0g"
 
@@ -40,7 +40,7 @@ rotation = 0.785398
 shape = SubResource("CapsuleShape2D_r8ydw")
 
 [node name="TouchBox" type="Area2D" parent="."]
-position = Vector2(0, 8)
+position = Vector2(7, 9)
 collision_layer = 4
 script = ExtResource("4_r8ydw")
 metadata/_custom_type_script = "uid://b5rx01rok1480"
