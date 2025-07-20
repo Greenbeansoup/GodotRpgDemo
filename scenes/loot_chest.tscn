@@ -1,0 +1,87 @@
+[gd_scene load_steps=12 format=3 uid="uid://bc61m38dn5ooi"]
+
+[ext_resource type="Script" uid="uid://cvrga2ytobwu" path="res://scripts/loot_chest.gd" id="1_4g00c"]
+[ext_resource type="Texture2D" uid="uid://b0rdiyhr0d5ak" path="res://assets/loot_chest.png" id="1_nc7si"]
+[ext_resource type="Script" uid="uid://xias512jahte" path="res://scripts/detection_box.gd" id="3_h8fn7"]
+[ext_resource type="Script" uid="uid://b5rx01rok1480" path="res://scripts/touch_box.gd" id="4_2sp6q"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4g00c"]
+atlas = ExtResource("1_nc7si")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h8fn7"]
+atlas = ExtResource("1_nc7si")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2sp6q"]
+atlas = ExtResource("1_nc7si")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ew3ky"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4g00c")
+}],
+"loop": false,
+"name": &"closed",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h8fn7")
+}],
+"loop": false,
+"name": &"open",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2sp6q")
+}],
+"loop": false,
+"name": &"peeking",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ikjls"]
+size = Vector2(14, 7)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2sp6q"]
+size = Vector2(26, 23)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ew3ky"]
+size = Vector2(26, 23)
+
+[node name="LootChest" type="StaticBody2D"]
+collision_mask = 0
+script = ExtResource("1_4g00c")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -7)
+sprite_frames = SubResource("SpriteFrames_ew3ky")
+animation = &"closed"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -4.5)
+shape = SubResource("RectangleShape2D_ikjls")
+
+[node name="DetectionBox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 512
+script = ExtResource("3_h8fn7")
+metadata/_custom_type_script = "uid://xias512jahte"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionBox"]
+position = Vector2(0, -5.5)
+shape = SubResource("RectangleShape2D_2sp6q")
+
+[node name="TouchBox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("4_2sp6q")
+metadata/_custom_type_script = "uid://b5rx01rok1480"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TouchBox"]
+position = Vector2(0, -5.5)
+shape = SubResource("RectangleShape2D_ew3ky")

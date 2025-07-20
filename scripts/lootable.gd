@@ -1,10 +1,8 @@
-class_name Weapon extends DroppableItem
+class_name Lootable extends Node
 
-@export var attack_time: float
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	super._ready()
 	pass # Replace with function body.
 
 
@@ -12,14 +10,5 @@ func _ready():
 func _process(delta):
 	pass
 
-func flip(flip_val: bool) -> void:
+func open():
 	pass
-
-func activate():
-	pass
-	
-func deactivate():
-	pass
-
-func get_attack_tie():
-	return attack_time

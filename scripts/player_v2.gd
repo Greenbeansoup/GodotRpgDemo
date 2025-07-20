@@ -30,6 +30,9 @@ var stamina_can_refill = true
 var roll_velocity = Vector2.ZERO
 var recoil_vector: Vector2 = Vector2.ZERO
 var recoil_timer: Timer
+var attack_timer: Timer
+
+var current_loot_focus: Lootable
 
 var player_state_machine: FiniteStateMachine
 
@@ -39,10 +42,11 @@ func _on_ready():
 	death_timer.connect("timeout", _on_death_timeout)
 	active_weapon_animation_player.connect("animation_finished", _on_attack_finish)
 	
+	attack_timer = Timer.new()
+	_init_timer(attack_timer, _on_attack_timer_timeout)
+	
 	recoil_timer = Timer.new()
-	recoil_timer.one_shot = true
-	recoil_timer.connect("timeout", _on_recoil_timer_timeout)
-	add_child(recoil_timer)
+	_init_timer(recoil_timer, _on_recoil_timer_timeout)
 	
 	if health_controller != null:
 		health_controller.connect("status_changed", _on_health_changed)
@@ -60,6 +64,11 @@ func _on_ready():
 	player_state_machine.add_state(_state_name(PLAYER_STATES.TAKING_DAMAGE), _on_take_damage)
 	player_state_machine.add_state(_state_name(PLAYER_STATES.DEAD), _on_death)
 	player_state_machine.change_state(_state_name(initial_player_state))
+
+func _init_timer(timer: Timer, call_back: Callable):
+	timer.one_shot = true
+	timer.connect("timeout", call_back)
+	add_child(timer)
 
 func _physics_process(delta):
 	if item_container != null:
@@ -79,6 +88,9 @@ func _physics_process(delta):
 		
 	if Input.is_action_just_pressed('interact'):
 		_interact()
+   
+	if Input.is_action_just_pressed('drop'):
+		_drop()
 	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
@@ -114,11 +126,15 @@ func _physics_process(delta):
 	
 	move_and_slide()
 	
-func _interact():
+func _drop():
 	if active_weapon != null:
 		active_weapon.reparent(get_tree().current_scene)
 		active_weapon.drop()
 		active_weapon = null
+
+func _interact():
+	if current_loot_focus != null:
+		current_loot_focus.open()
 
 func _attack():
 	if active_weapon != null:
@@ -127,6 +143,7 @@ func _attack():
 		else:
 			active_weapon_animation_player.play("attack")
 		active_weapon.activate()
+		attack_timer.start(active_weapon.attack_time)
 
 func _on_attack_finish(anim_name: String):
 	active_weapon.deactivate()
@@ -232,3 +249,13 @@ func _on_hurt_box_entered(body):
 			active_weapon = body_parent
 			active_weapon.global_position = active_weapon_container.global_position
 			active_weapon.flip(player_sprite.flip_h)
+		elif body_parent is Lootable:
+			current_loot_focus = body_parent as Lootable
+
+func _on_hurt_box_exited(body):
+	if current_loot_focus == body.get_parent():
+		current_loot_focus = null
+
+func _on_attack_timer_timeout():
+	if active_weapon != null:
+		active_weapon.deactivate()
