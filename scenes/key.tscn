@@ -13,6 +13,7 @@ size = Vector2(19, 13)
 [node name="Key" type="StaticBody2D"]
 collision_layer = 4
 script = ExtResource("1_fttkb")
+metadata/_custom_type_script = "uid://w755g7n4q2l4"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, -5.5)

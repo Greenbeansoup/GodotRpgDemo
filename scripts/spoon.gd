@@ -19,9 +19,11 @@ func _process(delta):
 
 func activate():
 	collision_shape_2d.set_deferred("disabled", false)
+	touch_collision.set_deferred("disabled", false)
 	
 func deactivate():
 	collision_shape_2d.set_deferred("disabled", true)
+	touch_collision.set_deferred("disabled", true)
 
 func flip(flip_val: bool) -> void:
 	sprite_2d.flip_h = flip_val

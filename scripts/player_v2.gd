@@ -128,7 +128,6 @@ func _physics_process(delta):
 	
 func _drop():
 	if active_weapon != null:
-		active_weapon.reparent(get_tree().current_scene)
 		active_weapon.drop()
 		active_weapon = null
 
@@ -143,7 +142,7 @@ func _attack():
 		else:
 			active_weapon_animation_player.play("attack")
 		active_weapon.activate()
-		attack_timer.start(active_weapon.attack_time)
+		attack_timer.start(active_weapon.get_attack_time())
 
 func _on_attack_finish(anim_name: String):
 	active_weapon.deactivate()
@@ -151,11 +150,10 @@ func _on_attack_finish(anim_name: String):
 func _flip(flip_val: bool) -> void:
 	if player_sprite.flip_h != flip_val:
 		player_sprite.flip_h = flip_val
-		active_weapon_container.position.x = (active_weapon_container.position.x) * -1 # that 14 is offset to rotate around the player body... why are you frowning
+		active_weapon_container.position.x = (active_weapon_container.position.x) * -1
 		if active_weapon != null:
 			active_weapon.flip(flip_val)
-	
-		
+
 func _on_dash_entered():
 	if stamina_controller.get_value() >= DASH_STAMINA_COST:
 		is_invulnerable = true

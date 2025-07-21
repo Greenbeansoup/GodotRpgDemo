@@ -1,5 +1,7 @@
 class_name LootChest extends Lootable
 
+@export var loot_item: DroppableItem
+
 @onready var animated_sprite_2d = $AnimatedSprite2D
 @onready var detection_box = $DetectionBox
 
@@ -16,9 +18,17 @@ func _ready():
 	
 	detection_box.connect("body_entered", _on_detection_box_body_entered)
 	detection_box.connect("body_exited", _on_detection_box_body_exited)
+	
+	if loot_item != null:
+		loot_item.hide()
+		loot_item.call_deferred("deactivate")
+		loot_item.global_position = self.global_position
 
 func open():
 	chest_state_machine.change_state("open")
+	if loot_item != null:
+		loot_item.show()
+		loot_item.drop()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

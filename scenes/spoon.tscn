@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://b5rx01rok1480" path="res://scripts/touch_box.gd" id="4_r8ydw"]
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_r8ydw"]
-points = PackedVector2Array(9, -20, 4, -25, -8, -10, -5, -8)
+points = PackedVector2Array(15, -11, 11, -15, -1, -1, 1, 1)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_r8ydw"]
 radius = 3.53553
@@ -19,6 +19,7 @@ height = 20.0
 [node name="Spoon" type="StaticBody2D" groups=["Player_Weapon"]]
 collision_layer = 8
 script = ExtResource("1_cax38")
+metadata/_custom_type_script = "uid://dn3tjsjkt8ul5"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(7, -7)
@@ -26,28 +27,25 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_r8mox")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(7, 9)
 shape = SubResource("ConvexPolygonShape2D_r8ydw")
 
 [node name="HitBox" type="Area2D" parent="." groups=["Player_Weapon"]]
-position = Vector2(7, 9)
 collision_layer = 8
 collision_mask = 2
 script = ExtResource("3_r8mox")
 metadata/_custom_type_script = "uid://bm03sebpowi0g"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
-position = Vector2(4, -20)
+position = Vector2(11, -11)
 rotation = 0.785398
 shape = SubResource("CapsuleShape2D_r8ydw")
 
 [node name="TouchBox" type="Area2D" parent="."]
-position = Vector2(7, 9)
 collision_layer = 4
 script = ExtResource("4_r8ydw")
 metadata/_custom_type_script = "uid://b5rx01rok1480"
 
 [node name="TouchCollision" type="CollisionShape2D" parent="TouchBox"]
-position = Vector2(0, -16)
+position = Vector2(7, -7)
 rotation = 0.785398
 shape = SubResource("CapsuleShape2D_fyayl")

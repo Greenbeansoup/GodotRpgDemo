@@ -10,10 +10,11 @@ size = Vector2(9, 16)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t2alg"]
 size = Vector2(9, 16)
 
-[node name="StaticBody2D" type="StaticBody2D"]
+[node name="FruitItem" type="StaticBody2D"]
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("2_t2alg")
+metadata/_custom_type_script = "uid://bpwtnagti5fw0"
 
 [node name="Fruit" type="Sprite2D" parent="."]
 texture = ExtResource("1_yvtr8")

@@ -15,11 +15,5 @@ func _process(delta):
 func flip(flip_val: bool) -> void:
 	pass
 
-func activate():
-	pass
-	
-func deactivate():
-	pass
-
-func get_attack_tie():
+func get_attack_time():
 	return attack_time
