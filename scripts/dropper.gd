@@ -14,9 +14,6 @@ func _ready():
 	drop_timer.connect("timeout", _on_drop_timer_timeout)
 	add_child(drop_timer)
 	
-	drop_container = DropContainer.new()
-	add_child(drop_container)
-	
 	drop()
 
 func _physics_process(delta):
@@ -24,7 +21,7 @@ func _physics_process(delta):
 
 func drop():
 	drop_container.set_floor(30)
-	drop_container.apply_impulse(Vector2(100.0, -100.0))
+	drop_container.apply_impulse(Vector2(200, -300.0))
 
 func set_drop(item: DroppableItem):
 	drop_container.global_position = item.global_position

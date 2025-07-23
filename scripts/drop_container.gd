@@ -1,11 +1,6 @@
 class_name DropContainer extends CharacterBody2D
 
-const DRAG_FACTOR = .9
-
-# Set the impulse strength (adjust as needed)
-@export var impulse_strength: float = 200.0
-# Set the direction of the impulse (e.g., upwards for a jump)
-@export var impulse_direction: Vector2 = Vector2(0, -1)
+const DRAG_FACTOR = .95
 
 # Gravity is automatically applied to CharacterBody2D nodes.
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -16,7 +11,6 @@ var impulse: Vector2
 
 # Called when the node enters the scene tree for the first time.
 func _ready():# Apply the initial impulse by directly adding to the velocity
-	velocity += impulse_direction * impulse_strength
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -24,13 +18,18 @@ func _process(delta):
 	pass
 
 func _physics_process(delta):
-	velocity += impulse
-	impulse = Vector2.ZERO
+	velocity += self.impulse
+	self.impulse = Vector2.ZERO
+	
+	if velocity.x > .1:
+		velocity.x *= DRAG_FACTOR
+	else:
+		velocity.x = 0
+
 	if !_is_on_floor():
 		velocity.y += gravity * delta
-	else:
+	elif velocity.y > 0:
 		velocity.y = 0
-	velocity.x *= DRAG_FACTOR
 	move_and_slide()
 
 func apply_impulse(impulse: Vector2):
