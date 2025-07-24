@@ -1,4 +1,4 @@
-class_name Lootable extends Node
+class_name Lootable extends Node2D
 
 
 # Called when the node enters the scene tree for the first time.

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=4 uid="uid://biaagnm4awvxk"]
+[gd_scene load_steps=12 format=4 uid="uid://biaagnm4awvxk"]
 
 [ext_resource type="Script" uid="uid://cxtddkf14vqvn" path="res://scripts/level_1_1.gd" id="1_ddcun"]
 [ext_resource type="PackedScene" uid="uid://bttitv0tct00p" path="res://scenes/player.tscn" id="2_qbunr"]
@@ -11,7 +11,6 @@
 [ext_resource type="PackedScene" uid="uid://b784jogk4riyq" path="res://scenes/key.tscn" id="9_dyh2t"]
 [ext_resource type="PackedScene" uid="uid://dfnsnru8stsm8" path="res://scenes/spoon.tscn" id="10_8dks1"]
 [ext_resource type="PackedScene" uid="uid://bc61m38dn5ooi" path="res://scenes/loot_chest.tscn" id="11_s474h"]
-[ext_resource type="PackedScene" uid="uid://dd6p2uu01nujp" path="res://scenes/dropper.tscn" id="12_g3uln"]
 
 [node name="Level1-1" type="Node2D"]
 y_sort_enabled = true
@@ -159,13 +158,10 @@ position = Vector2(960, -259)
 key_id = "123"
 
 [node name="Spoon" parent="." instance=ExtResource("10_8dks1")]
-position = Vector2(956, -324)
+position = Vector2(-72, 9)
 damage = 5.0
 attack_time = 0.067
 
 [node name="LootChest" parent="." node_paths=PackedStringArray("loot_item") instance=ExtResource("11_s474h")]
-position = Vector2(960, -326)
+position = Vector2(-68, 7)
 loot_item = NodePath("../Spoon")
-
-[node name="Dropper" parent="." instance=ExtResource("12_g3uln")]
-position = Vector2(-24, -5)

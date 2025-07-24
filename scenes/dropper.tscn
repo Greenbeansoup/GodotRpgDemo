@@ -22,6 +22,7 @@ position = Vector2(0, -5)
 shape = SubResource("RectangleShape2D_y3qni")
 
 [node name="Sprite2D" type="Sprite2D" parent="DropContainer"]
+visible = false
 position = Vector2(-2.38419e-07, -5)
 scale = Vector2(10, 10)
 texture = SubResource("CanvasTexture_y3qni")

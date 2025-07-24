@@ -21,7 +21,7 @@ func _physics_process(delta):
 	velocity += self.impulse
 	self.impulse = Vector2.ZERO
 	
-	if velocity.x > .1:
+	if abs(velocity.x) > .1:
 		velocity.x *= DRAG_FACTOR
 	else:
 		velocity.x = 0
@@ -33,10 +33,12 @@ func _physics_process(delta):
 	move_and_slide()
 
 func apply_impulse(impulse: Vector2):
+	print("Impulse: ", impulse)
+	if impulse.y > 0:
+		self.floor = self.global_position.y + (impulse.y / 4.0)
+	else:
+		self.floor = self.global_position.y + (impulse.y / 12.0)
 	self.impulse = impulse
-
-func set_floor(floor: float):
-	self.floor = floor
 
 func _is_on_floor():
 	if global_position.y >= floor:

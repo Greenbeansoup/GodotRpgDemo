@@ -17,6 +17,7 @@ class_name Player extends Entity
 @export_enum("IDLE:0", "RUNNING:1", "DASHING:2", "TAKING_DAMAGE:3", "DEAD:4") var initial_player_state: int
 enum PLAYER_STATES { IDLE, RUNNING, DASHING, TAKING_DAMAGE, DEAD }
 
+const DROPPER_SCENE = preload("res://scenes/dropper.tscn")
 const SPEED = 120.0
 const DASH_STRENGTH = 500.0
 const DASH_DELAY = 1
@@ -31,6 +32,7 @@ var roll_velocity = Vector2.ZERO
 var recoil_vector: Vector2 = Vector2.ZERO
 var recoil_timer: Timer
 var attack_timer: Timer
+var dropper: Dropper
 
 var current_loot_focus: Lootable
 
@@ -64,6 +66,10 @@ func _on_ready():
 	player_state_machine.add_state(_state_name(PLAYER_STATES.TAKING_DAMAGE), _on_take_damage)
 	player_state_machine.add_state(_state_name(PLAYER_STATES.DEAD), _on_death)
 	player_state_machine.change_state(_state_name(initial_player_state))
+	
+	dropper = DROPPER_SCENE.instantiate()
+	dropper.global_position = self.global_position
+	add_child(dropper)
 
 func _init_timer(timer: Timer, call_back: Callable):
 	timer.one_shot = true
@@ -128,7 +134,10 @@ func _physics_process(delta):
 	
 func _drop():
 	if active_weapon != null:
-		active_weapon.drop()
+		# active_weapon.drop()
+		active_weapon.deactivate()
+		dropper.set_drop(active_weapon)
+		dropper.drop()
 		active_weapon = null
 
 func _interact():

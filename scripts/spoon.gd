@@ -34,5 +34,4 @@ func set_touch_box_enabled(enabled: bool) -> void:
 	touch_collision.set_deferred("disabled", !enabled)
 
 func drop(call_back: Callable = set_touch_box_enabled.bind(true)) -> void:
-	set_touch_box_enabled(false)
-	super.drop(call_back)
+	pass
