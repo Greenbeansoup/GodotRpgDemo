@@ -23,10 +23,11 @@ func _ready():
 func _physics_process(delta):
 	pass
 
-func drop():
+func drop(direction: int = 0):
 	if drop_item:
 		drop_item.deactivate()
-	drop_container.call_deferred("apply_impulse", _get_random_direction().normalized() * rng.randf_range(100, 250))
+	drop_container.reparent(get_tree().current_scene)
+	drop_container.call_deferred("apply_impulse", _get_random_direction(direction).normalized() * rng.randf_range(100, 250))
 	drop_timer.start(0.5)
 
 func set_drop(item: DroppableItem):
@@ -40,9 +41,19 @@ func _on_drop_timer_timeout():
 		drop_item.set_touch_box_enabled(true)
 		drop_item = null
 
-func _get_random_direction() -> Vector2:
+func _get_random_direction(direction) -> Vector2:
 	rng.randomize()
-	var angle = rng.randf_range(-PI, PI)
+	var angle: float
+	if direction == 0:
+		angle = rng.randf_range(-PI, 0.0) # Top half of unit circle
+	# Bottom right 0,PI/2
+	# Bottom left PI/2,PI
+	# Top left -PI,-PI/2
+	# Top Right -PI/2,0
+	if direction == 1:
+		angle = rng.randf_range(-PI/2.0, 0.0)
+	elif direction == -1:
+		angle = rng.randf_range(-PI, -PI/2.0)
 	return Vector2.RIGHT.rotated(angle)
 
 	

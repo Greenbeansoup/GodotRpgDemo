@@ -137,7 +137,10 @@ func _drop():
 		# active_weapon.drop()
 		active_weapon.deactivate()
 		dropper.set_drop(active_weapon)
-		dropper.drop()
+		if player_sprite.flip_h:
+			dropper.drop(-1) # ew magic number, need to do enum
+		else:
+			dropper.drop(1)
 		active_weapon = null
 
 func _interact():
