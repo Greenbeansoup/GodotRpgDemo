@@ -256,6 +256,7 @@ func _on_hurt_box_entered(body):
 			active_weapon = body_parent
 			active_weapon.global_position = active_weapon_container.global_position
 			active_weapon.flip(player_sprite.flip_h)
+			active_weapon.set_touch_box_enabled(false) # TODO: Why do I need this. Find where it's being activated, shouldn't need touchbox while it's being held
 		elif body_parent is Lootable:
 			current_loot_focus = body_parent as Lootable
 

@@ -26,7 +26,7 @@ func _physics_process(delta):
 func drop():
 	if drop_item:
 		drop_item.deactivate()
-	drop_container.apply_impulse(_get_random_direction().normalized() * rng.randf_range(100, 250))
+	drop_container.call_deferred("apply_impulse", _get_random_direction().normalized() * rng.randf_range(100, 250))
 	drop_timer.start(0.5)
 
 func set_drop(item: DroppableItem):
@@ -37,7 +37,7 @@ func set_drop(item: DroppableItem):
 func _on_drop_timer_timeout():
 	if drop_item:
 		drop_item.reparent(get_tree().current_scene)
-		drop_item.call_deferred("activate")
+		drop_item.set_touch_box_enabled(true)
 		drop_item = null
 
 func _get_random_direction() -> Vector2:

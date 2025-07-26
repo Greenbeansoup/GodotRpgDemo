@@ -3,6 +3,7 @@ class_name SpoonItem extends Weapon
 @onready var collision_shape_2d = $HitBox/CollisionShape2D
 @onready var sprite_2d = $Sprite2D
 @onready var touch_collision = $TouchBox/TouchCollision
+@onready var touch_box = $TouchBox
 
 @export var damage: float
 
