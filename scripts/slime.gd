@@ -1,5 +1,7 @@
 class_name Slime extends Entity
 
+const DROPPER_SCENE = preload("res://scenes/dropper.tscn")
+
 @onready var sprite_2d = $ScaleNode/Sprite2D
 @onready var animation_player = $ScaleNode/Sprite2D/AnimationPlayer
 @onready var scale_node = $ScaleNode
@@ -38,6 +40,7 @@ var idle_move_timer: Timer
 var idle_direction: Vector2
 var speed: float
 var current_scale: float = 1.0
+var dropper: Dropper
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -71,6 +74,9 @@ func _ready():
 	idle_move_timer.connect("timeout", _on_idle_move_timer_timeout)
 	
 	_initialize(slime_type, slime_initial_state, max_health, min_health, initial_scale)
+	dropper = DROPPER_SCENE.instantiate()
+	add_child(dropper)
+	dropper.global_position = self.global_position
 	if drop != null:
 		drop.set_touch_box_enabled(false)
 		drop.global_position = drop_container.global_position
@@ -79,7 +85,6 @@ func _ready():
 		
 
 func _initialize(type: SLIME_TYPE, state: SLIME_STATES, max_health: float = 10.0, min_health: float = 0.0, scale: float = 1.0):
-	print("initial health ", max_health)
 	_set_state(state)
 	hit_box.damage = base_damage
 	speed = base_speed
@@ -126,7 +131,9 @@ func _on_hurt_box_entered(body):
 		var body_parent = body.get_parent()
 		if drop == null && body_parent is DroppableItem and body_parent is not Weapon and body_parent.get_parent() != drop_container:
 			(body_parent as DroppableItem).set_touch_box_enabled(false)
-			body_parent.reparent(drop_container)
+			if body_parent.get_parent() is Player:
+				(body_parent as Player).remove_item_from_inventory(body_parent)
+			body_parent.call_deferred("reparent", drop_container)
 			body_parent.global_position = drop_container.global_position
 			drop = body_parent
 			drop.apply_scale(scale_node.scale)
@@ -147,13 +154,15 @@ func damage_entity(value: float):
 func _on_health_changed(oldValue: float, newValue: float):
 	if health_controller != null and newValue <= health_controller.min_value: 
 		if drop != null:
-			drop.reparent(get_tree().current_scene)
 			drop.drop()
+			dropper.set_drop(drop)
+			dropper.drop()
 			drop = null
 		if slime_type == SLIME_TYPE.PURPLE:
 			_initialize(SLIME_TYPE.GREEN, SLIME_STATES.ASLEEP)
 		elif slime_type == SLIME_TYPE.GREEN:
-			queue_free()
+			#queue_free()
+			can_move = false
 		return
 	var diff: float = newValue - oldValue
 	var percentage_change = (diff / health_controller.max_value) + 1

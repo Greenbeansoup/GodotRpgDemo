@@ -75,8 +75,8 @@ func _physics_process(delta):
 		_initialize(Slime_Type.GREEN, Slime_State.ASLEEP, true)
 	elif !dead and !can_move:
 		return
-	elif dead:
-		queue_free()
+	#elif dead:
+		# queue_free()
 	
 	var direction: Vector2
 	var move_speed = IDLE_SPEED

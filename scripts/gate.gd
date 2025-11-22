@@ -21,4 +21,5 @@ func _on_detection_box_body_entered(body):
 			if key_item.key_id == key_id:
 				animation_player.play("open")
 				player.remove_item_from_inventory(key_item)
+				key_item.queue_free()
 	pass

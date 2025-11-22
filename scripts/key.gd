@@ -15,6 +15,5 @@ func get_id() -> String:
 func set_touch_box_enabled(enabled: bool) -> void:
 	collision_shape_2d.set_deferred("disabled", !enabled)
 
-func drop(call_back: Callable = set_touch_box_enabled.bind(true)) -> void:
+func drop() -> void:
 	scale = Vector2(.5, .5)
-	super.drop(call_back)

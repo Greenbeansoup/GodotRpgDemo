@@ -15,9 +15,8 @@ func set_fruit(fruit_shape: Globals.Fruit_Shapes, fruit_color: Globals.Fruit_Col
 		Globals.Fruit_Shapes.GRAPE:
 			touch_box.value = 10
 
-func drop(call_back: Callable = set_touch_box_enabled.bind(true)) -> void:
+func drop() -> void:
 	scale = Vector2(1.0, 1.0)
-	super.drop(call_back)
 	
 func _get_random_direction() -> Vector2:
 	return Vector2.DOWN.rotated(rng.randf() * 2 * PI)

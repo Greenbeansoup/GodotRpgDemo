@@ -26,12 +26,12 @@ func _physics_process(delta):
 func drop(direction: int = 0):
 	if drop_item:
 		drop_item.deactivate()
-	drop_container.reparent(get_tree().current_scene)
+	drop_container.call_deferred("reparent", get_tree().current_scene) # this is weird if we need to reuse
 	drop_container.call_deferred("apply_impulse", _get_random_direction(direction).normalized() * rng.randf_range(100, 250))
 	drop_timer.start(0.5)
 
 func set_drop(item: DroppableItem):
-	drop_container.global_position = item.global_position
+	drop_container.global_position = item.global_position # drop containers might need to be created/destroyed
 	drop_item = item
 	drop_item.call_deferred("reparent", drop_container)
 	

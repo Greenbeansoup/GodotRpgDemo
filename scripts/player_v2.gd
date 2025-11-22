@@ -35,6 +35,7 @@ var attack_timer: Timer
 var dropper: Dropper
 
 var current_loot_focus: Lootable
+var inventory_manager: InventoryManager
 
 var player_state_machine: FiniteStateMachine
 
@@ -53,11 +54,7 @@ func _on_ready():
 	if health_controller != null:
 		health_controller.connect("status_changed", _on_health_changed)
 		
-	if inventory_item != null:
-		remove_child(inventory_item)
-		item_container.add_child(inventory_item)
-		inventory_item.global_position = item_container.global_position
-	item_container.top_level = true # tells item container to ignore parent position data
+	inventory_manager = InventoryManager.new(ItemContainer.new(), inventory_item)
 
 	player_state_machine = FiniteStateMachine.new()
 	player_state_machine.add_state(_state_name(PLAYER_STATES.IDLE), player_sprite.anim_idle)
@@ -111,7 +108,6 @@ func _physics_process(delta):
 			if pre_velocity.x == 0 and pre_velocity.y == 0:
 				_set_state(PLAYER_STATES.IDLE)
 	else:
-		print("Taking damage")
 		pre_velocity = recoil_vector
 		move_force = 200.0
 	if Input.is_action_just_pressed("roll"):
@@ -167,6 +163,7 @@ func _flip(flip_val: bool) -> void:
 			active_weapon.flip(flip_val)
 
 func _on_dash_entered():
+	print("Dash entered")
 	if stamina_controller.get_value() >= DASH_STAMINA_COST:
 		is_invulnerable = true
 		player_sprite.anim_dashing()
@@ -179,6 +176,7 @@ func _on_dash_entered():
 		_set_state(PLAYER_STATES.IDLE)
 		
 func _on_dash_exited():
+	print("Dash exited")
 	is_invulnerable = false
 
 func _state_name(state: PLAYER_STATES) -> String:
@@ -206,7 +204,6 @@ func damage_entity(value: float):
 		
 func remove_item_from_inventory(item: Node2D):
 	if inventory_item == item:
-		inventory_item.queue_free()
 		inventory_item = null
 
 func _on_take_damage():
@@ -234,7 +231,6 @@ func _recoil_from_point(source: Vector2):
 	recoil_timer.start(0.1)
 
 func _on_recoil_timer_timeout():
-	print("Recoil timeout")
 	_set_state(PLAYER_STATES.IDLE)
 
 func _on_hurt_box_entered(body):
@@ -250,8 +246,8 @@ func _on_hurt_box_entered(body):
 			# TODO figure out a purpose for green stuff
 			print("Green thing found")
 			body_parent.queue_free()
-		elif body_parent is KeyItem and inventory_item == null:
-			body_parent.reparent(item_container)
+		elif body_parent is KeyItem and inventory_item == null: # TODO: create a loot manager so entities can be notified of their items being removed
+			body_parent.call_deferred("reparent", item_container)
 			inventory_item = body_parent
 			inventory_item.global_position = item_container.global_position
 		elif body_parent is Weapon and active_weapon == null:

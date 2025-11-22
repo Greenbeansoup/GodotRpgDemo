@@ -33,7 +33,6 @@ func _physics_process(delta):
 	move_and_slide()
 
 func apply_impulse(impulse: Vector2):
-	print("Impulse: ", impulse)
 	if impulse.y > 0:
 		self.floor = self.global_position.y + (impulse.y / 4.0)
 	else:

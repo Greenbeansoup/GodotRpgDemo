@@ -15,7 +15,7 @@ func set_touch_box_enabled(enabled: bool) -> void:
 	print("Parent called, you probably didn't mean that")
 	pass
 
-func drop(call_back: Callable = func(): pass) -> void:
+func drop() -> void:
 	pass
 	
 func _get_random_direction() -> Vector2:

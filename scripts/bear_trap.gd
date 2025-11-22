@@ -75,6 +75,7 @@ func _on_sprung_timer_timeout():
 	animated_sprite_2d.play("idle")
 	is_sprung = false
 	if trapped_entity != null:
+		trapped_entity.show()
 		trapped_entity.set_entity_can_move(true)
 		trapped_entity = null
 
